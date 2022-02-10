@@ -1,0 +1,21 @@
+.slide {
+  width: 200px;
+  height: 300px;
+}
+
+a.link {
+  text-decoration: none;
+  width: 200px;
+  height: 300px;
+  color: var(--theme-text-color);
+  overflow: hidden;
+}
+a.link > h4, a.link h5 {
+  margin: 3px 0;
+  font-family: "Monda", sans-serif;
+}
+a.link > h5 {
+  color: var(--theme-subtext-color);
+}
+
+/*# sourceMappingURL=FavCard.module.css.map */

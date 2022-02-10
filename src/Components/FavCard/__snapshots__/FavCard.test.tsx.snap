@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`---> Testing /Components/FavCard snapshot test 1`] = `
+<div>
+  <a
+    className="link"
+    href="/details/a"
+    onClick={[Function]}
+  >
+    <img
+      alt="poster"
+      className="slide"
+      src="b"
+    />
+    <h4
+      role="title"
+    >
+      c
+    </h4>
+    <h5
+      role="genre"
+    >
+      d
+    </h5>
+  </a>
+</div>
+`;

@@ -1,0 +1,23 @@
+.wrapper {
+  background: var(--theme-main-color_2);
+  color: var(--theme-text-color);
+  padding: 30px 50px;
+}
+.wrapper > h1 {
+  text-align: center;
+  margin: 0 0 50px;
+}
+.wrapper .empty {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.wrapper .nonEmpty {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 200px);
+  column-gap: 30px;
+}
+
+/*# sourceMappingURL=Favourites.module.css.map */

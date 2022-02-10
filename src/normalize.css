@@ -6,6 +6,7 @@
 /* ----- CUSTOM RESETS BY ME ----- */
 * {
     box-sizing: border-box;
+    max-width: 100vw;
 }
 /* ------ END OF CUSTOM RESETS BY ME ------ */
 

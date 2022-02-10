@@ -11,4 +11,5 @@
 body {
     background-color: var(--theme-main-color_2);
     color: var(--theme-text-color);
+    font-family: 'Comfortaa', cursive;
 }

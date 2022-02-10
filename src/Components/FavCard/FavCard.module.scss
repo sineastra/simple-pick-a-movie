@@ -1,0 +1,26 @@
+@import "../../_scssPartials/mixins/mixins";
+
+@mixin width-height {
+    width: 200px;
+    height: 300px;
+}
+
+.slide {
+    @include width-height;
+}
+
+a.link {
+    text-decoration: none;
+    @include width-height;
+    color: var(--theme-text-color);
+    overflow: hidden;
+
+    & > h4, h5 {
+        margin: 3px 0;
+        font-family: 'Monda', sans-serif;
+    }
+
+    & > h5 {
+        color: var(--theme-subtext-color);
+    }
+}
