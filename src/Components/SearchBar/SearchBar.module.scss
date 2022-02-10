@@ -19,6 +19,13 @@
         border: 1px solid var(--theme-text-color);
         color: var(--theme-text-color);
         vertical-align: middle;
+        cursor: pointer;
+
+        &:hover {
+            border: 1px solid transparent;
+            background: var(--theme-text-color);
+            color: var(--theme-main-color_1);
+        }
     }
 }
 

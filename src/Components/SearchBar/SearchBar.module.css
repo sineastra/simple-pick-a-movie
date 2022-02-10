@@ -20,6 +20,12 @@
   border: 1px solid var(--theme-text-color);
   color: var(--theme-text-color);
   vertical-align: middle;
+  cursor: pointer;
+}
+.form > button:hover {
+  border: 1px solid transparent;
+  background: var(--theme-text-color);
+  color: var(--theme-main-color_1);
 }
 
 /*# sourceMappingURL=SearchBar.module.css.map */
