@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Monda&family=Nunito&display=swap');
+
+:root {
+    --theme-main-color_1: black;
+    --theme-main-color_2: #1c1c1c;
+    --theme-secondary-color: orange;
+    --theme-subtext-color: #ababab;
+    --theme-text-color: white;
+}
+
+body {
+    background-color: var(--theme-main-color_2);
+    color: var(--theme-text-color);
+}

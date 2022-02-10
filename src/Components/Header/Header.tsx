@@ -1,7 +1,14 @@
+import SearchBar from "../SearchBar/SearchBar"
+import styles from "./Header.module.scss"
+
+
 const Header = () => {
 
 	return (
-		<div>Header</div>
+		<header className={ styles.header }>
+			<h1>My Movie Collection</h1>
+			<SearchBar/>
+		</header>
 	)
 }
 

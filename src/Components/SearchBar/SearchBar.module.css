@@ -1,0 +1,25 @@
+.form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: initial;
+  align-content: initial;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+}
+.form > .input {
+  width: 70%;
+  height: 100%;
+  border-radius: 5px;
+  text-indent: 10px;
+}
+.form > button {
+  width: 25%;
+  border-radius: 5px;
+  background-color: transparent;
+  border: 1px solid var(--theme-text-color);
+  color: var(--theme-text-color);
+  vertical-align: middle;
+}
+
+/*# sourceMappingURL=SearchBar.module.css.map */

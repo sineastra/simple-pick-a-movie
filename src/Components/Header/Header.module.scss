@@ -1,0 +1,20 @@
+@import "../../_scssPartials/mixins/mixins";
+
+.header {
+    width: 100vw;
+    height: 150px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: 'Comfortaa', cursive;
+    background-color: var(--theme-main-color_1);
+    @include displayFlex(row, space-between, center);
+
+    & > h1 {
+        color: var(--theme-text-color);
+    }
+
+    & > form {
+        width: 500px;
+        height: 60px;
+    }
+}
