@@ -18,6 +18,7 @@ const mockedMovies = [{
 	title: 'b',
 	genre: 'a',
 }]
+
 const store = configureStore({
 	reducer: {
 		userData: userReducer,
