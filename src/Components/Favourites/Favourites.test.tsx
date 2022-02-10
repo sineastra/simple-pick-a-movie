@@ -14,12 +14,12 @@ const mockedMovies: FavCardMovieIntF[] = [{
 	imdbId: 'a',
 	poster: 'b',
 	title: 'c',
-	genre: 'd',
+	genres: ['d', 'e'],
 }, {
 	imdbId: 'd',
 	poster: 'c',
 	title: 'b',
-	genre: 'a',
+	genres: ['a', 'b'],
 }]
 
 describe("---> Testing /Components/Favourites", () => {

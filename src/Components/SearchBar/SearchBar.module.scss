@@ -4,6 +4,8 @@
     @include displayFlex(row, space-between);
     white-space: nowrap;
     flex-wrap: nowrap;
+    width: 100%;
+    height: 100%;
 
     & > .input {
         width: 70%;

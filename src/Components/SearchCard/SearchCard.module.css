@@ -1,0 +1,47 @@
+.mainWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: initial;
+  align-items: initial;
+  align-content: initial;
+  margin-bottom: 50px;
+  height: 300px;
+}
+.mainWrapper > .infoWrapper {
+  height: 100%;
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: initial;
+  align-content: initial;
+}
+.mainWrapper > .infoWrapper > h1 {
+  margin: 0;
+}
+.mainWrapper > .infoWrapper > button {
+  padding: 20px;
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+}
+.mainWrapper > .infoWrapper > button.removeBtn {
+  border: 1px solid red;
+  color: red;
+}
+.mainWrapper > .infoWrapper > button.removeBtn:hover {
+  border: 1px solid transparent;
+  background: red;
+  color: var(--theme-text-color_2);
+}
+.mainWrapper > .infoWrapper > button.addBtn {
+  border: 1px solid green;
+  color: green;
+}
+.mainWrapper > .infoWrapper > button.addBtn:hover {
+  border: 1px solid transparent;
+  background: green;
+  color: var(--theme-text-color_2);
+}
+
+/*# sourceMappingURL=SearchCard.module.css.map */

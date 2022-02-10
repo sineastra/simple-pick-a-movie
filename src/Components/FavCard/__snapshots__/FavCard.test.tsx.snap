@@ -22,7 +22,7 @@ exports[`---> Testing /Components/FavCard snapshot test 1`] = `
     <h5
       role="genre"
     >
-      d
+      d, e
     </h5>
   </a>
 </div>

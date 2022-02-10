@@ -48,7 +48,7 @@ exports[`---> Testing /Components/Favourites should render correctly when there 
         <h5
           role="genre"
         >
-          d
+          d, e
         </h5>
       </a>
     </div>
@@ -73,7 +73,7 @@ exports[`---> Testing /Components/Favourites should render correctly when there 
         <h5
           role="genre"
         >
-          a
+          a, b
         </h5>
       </a>
     </div>

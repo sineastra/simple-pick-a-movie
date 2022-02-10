@@ -13,7 +13,7 @@ const SingleGridMovie = ({ movie }: propsIntF) => {
 			<Link to={ `/details/${ movie.imdbId }` } className={ styles.link }>
 				<img src={ movie.poster } alt="poster" className={ styles.slide }/>
 				<h4 role="title">{ movie.title }</h4>
-				<h5 role="genre">{ movie.genre }</h5>
+				<h5 role="genre">{ movie.genres.join(', ') }</h5>
 			</Link>
 		</div>
 	)

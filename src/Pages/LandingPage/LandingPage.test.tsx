@@ -11,12 +11,12 @@ const mockedMovies = [{
 	imdbId: 'a',
 	poster: 'b',
 	title: 'c',
-	genre: 'd',
+	genres: ['d', 'e'],
 }, {
 	imdbId: 'd',
 	poster: 'c',
 	title: 'b',
-	genre: 'a',
+	genres: ['a', 'b'],
 }]
 
 const store = configureStore({

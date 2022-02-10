@@ -8,7 +8,7 @@ const mockedMovie: FavCardMovieIntF = {
 	imdbId: 'a',
 	poster: 'b',
 	title: 'c',
-	genre: 'd',
+	genres: ['d', 'e'],
 }
 
 describe("---> Testing /Components/FavCard", () => {
