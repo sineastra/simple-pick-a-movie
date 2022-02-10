@@ -1,31 +1,31 @@
 import HeroSection from "../../Components/HeroSection/HeroSection"
 import Favourites from "../../Components/Favourites/Favourites"
 import { FavCardMovieIntF } from "../../_interfaces/movies"
-
-
-const mockedMovies: FavCardMovieIntF[] = [{
-	imdbId: '1',
-	poster: "https://static.tvmaze.com/uploads/images/medium_portrait/237/592589.jpg",
-	title: '1',
-	genre: 'asd',
-}, {
-	imdbId: '2',
-	poster: "https://static.tvmaze.com/uploads/images/medium_portrait/237/592589.jpg",
-	title: '1',
-	genre: 'asd',
-}, {
-	imdbId: '3',
-	poster: "https://static.tvmaze.com/uploads/images/medium_portrait/237/592589.jpg",
-	title: '1',
-	genre: 'asd',
-}]
+import { useSelector } from "react-redux"
+import { RootState } from "../../_state/app/store"
+import { useEffect, useState } from "react"
+import { movieRequests } from "../../requests/movies"
 
 const LandingPage = () => {
+	const [movies, setMovies] = useState<FavCardMovieIntF[]>([])
+	const moviesIds: string[] = useSelector((state: RootState) => state.userData.favourites)
+
+	useEffect(() => {
+		const getData = async () => {
+			if (moviesIds.length > 0) {
+				const data = await movieRequests.getFavs(moviesIds)
+
+				setMovies(data)
+			}
+		}
+
+		getData()
+	}, [moviesIds])
 
 	return (
 		<>
 			<HeroSection/>
-			<Favourites movies={ mockedMovies }/>
+			<Favourites movies={ movies }/>
 		</>
 	)
 }

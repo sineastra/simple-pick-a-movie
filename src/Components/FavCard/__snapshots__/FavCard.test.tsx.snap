@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`---> Testing /Components/FavCard snapshot test 1`] = `
-<div>
+<div
+  role="slide"
+>
   <a
     className="link"
     href="/details/a"

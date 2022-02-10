@@ -9,7 +9,7 @@ interface propsIntF {
 
 const SingleGridMovie = ({ movie }: propsIntF) => {
 	return (
-		<div>
+		<div role="slide">
 			<Link to={ `/details/${ movie.imdbId }` } className={ styles.link }>
 				<img src={ movie.poster } alt="poster" className={ styles.slide }/>
 				<h4 role="title">{ movie.title }</h4>

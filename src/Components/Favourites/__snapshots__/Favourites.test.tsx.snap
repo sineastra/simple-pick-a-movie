@@ -9,6 +9,7 @@ exports[`---> Testing /Components/Favourites should render correctly when there 
   </h1>
   <div
     className="empty"
+    role="no-fav-msg"
   >
     You don't have any favourites yet. Go and browse like a browser.
   </div>
@@ -24,8 +25,11 @@ exports[`---> Testing /Components/Favourites should render correctly when there 
   </h1>
   <div
     className="nonEmpty"
+    role="fav-grid"
   >
-    <div>
+    <div
+      role="slide"
+    >
       <a
         className="link"
         href="/details/a"
@@ -48,7 +52,9 @@ exports[`---> Testing /Components/Favourites should render correctly when there 
         </h5>
       </a>
     </div>
-    <div>
+    <div
+      role="slide"
+    >
       <a
         className="link"
         href="/details/d"
