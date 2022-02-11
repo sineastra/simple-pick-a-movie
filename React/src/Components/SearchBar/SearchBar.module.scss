@@ -1,0 +1,33 @@
+@import "../../_scssPartials/mixins/mixins";
+
+.form {
+    @include displayFlex(row, space-between);
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 100%;
+
+    & > .input {
+        width: 70%;
+        height: 100%;
+        border-radius: 5px;
+        text-indent: 10px;
+    }
+
+    & > button {
+        width: 25%;
+        border-radius: 5px;
+        background-color: transparent;
+        border: 1px solid var(--theme-text-color);
+        color: var(--theme-text-color);
+        vertical-align: middle;
+        cursor: pointer;
+
+        &:hover {
+            border: 1px solid transparent;
+            background: var(--theme-text-color);
+            color: var(--theme-main-color_1);
+        }
+    }
+}
+
