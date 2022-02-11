@@ -14,14 +14,16 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {
 		addFavourite: (state: userData, action: PayloadAction<string>) => {
-			if (!state.favourites.includes(action.payload)) {
-				state.favourites.push(action.payload)
+			if (!state.favourites.some(x => x === action.payload)) {
+				state.favourites = [...state.favourites, action.payload]
 			}
 		},
-		removeFavourite: (state: userData, action: PayloadAction<string>) => {
+		removeFavourite: (state: userData, action: PayloadAction<string | undefined>) => {
 			const index = state.favourites.find(x => x === action.payload)
 
-			if (index) {
+			if (action.payload === undefined) {
+				state.favourites = []
+			} else if (index) {
 				state.favourites.splice(Number(index), 1)
 			}
 		},

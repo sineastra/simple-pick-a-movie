@@ -7,14 +7,14 @@ import { BaseSyntheticEvent } from "react"
 interface propsIntF {
 	movie: SearchCardMovieIntF,
 	favourites: string[],
-	addFav: (f: string, e: BaseSyntheticEvent) => void,
-	removeFav: (f: string, e: BaseSyntheticEvent) => void,
+	addFav: (f: string) => void,
+	removeFav: (f: string) => void,
 }
 const SearchCard = ({ movie, favourites, addFav, removeFav }: propsIntF) => {
 	const isFav = favourites.some(x => x === movie.imdbId)
 
 	return (
-		<div className={ styles.mainWrapper }>
+		<div className={ styles.mainWrapper } role="poster">
 			<Link to={ `/details/${ movie.imdbId }` }>
 				<img src={ movie.poster } alt="poster"/>
 			</Link>
@@ -32,11 +32,11 @@ const SearchCard = ({ movie, favourites, addFav, removeFav }: propsIntF) => {
 				{ isFav
 					? <button
 						className={ styles.removeBtn }
-						onClick={ (e) => removeFav(movie.imdbId, e) }>Remove From Favourites
+						onClick={ (e) => removeFav(movie.imdbId) }>Remove From Favourites
 					</button>
 					: <button
 						className={ styles.addBtn }
-						onClick={ (e) => addFav(movie.imdbId, e) }>Add To Favourites
+						onClick={ (e) => addFav(movie.imdbId) }>Add To Favourites
 					</button>
 				}
 			</div>

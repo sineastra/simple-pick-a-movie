@@ -1,27 +1,40 @@
 import SearchBar from "../../Components/SearchBar/SearchBar"
 import SearchCard from "../../Components/SearchCard/SearchCard"
 import styles from "./SearchPage.module.scss"
+import { useLocation } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { movieRequests } from "../../requests/movies"
+import { SearchCardMovieIntF } from "../../_interfaces/movies"
+import { useSelector } from "react-redux"
+import store, { RootState } from "../../_state/app/store"
+import { addFavourite, removeFavourite } from "../../_state/features/userSlice"
 
 
-const mockedMovie = {
-	imdbId: 'a',
-	poster: 'https://static.tvmaze.com/uploads/images/medium_portrait/190/476117.jpg',
-	title: 'c',
-	genres: ['a', 'b', 'c'],
-	runtime: 1,
-	officialSite: 'd',
-	description: 'e',
-}
 const SearchPage = () => {
-	const mock = [1, 2, 3]
+	const location = useLocation()
+	const [movies, setMovies] = useState<SearchCardMovieIntF[]>([])
+	const favs = useSelector((state: RootState) => state.userData.favourites)
 
-	const addFav = () => {
-		console.log('addFav')
+	const addFav = async (favId: string) => {
+		await store.dispatch(addFavourite(favId))
 	}
 
-	const removeFav = () => {
-		console.log('removeFav')
+	const removeFav = async (favId: string) => {
+		await store.dispatch(removeFavourite(favId))
 	}
+
+	useEffect(() => {
+		const search = location.search
+		const getSearchResult = async () => {
+			const result = await movieRequests.getSearchs(search)
+
+			setMovies(result)
+		}
+
+		if (search) {
+			getSearchResult()
+		}
+	}, [location.search])
 
 	return (
 		<section className={ styles.wrapper }>
@@ -32,13 +45,18 @@ const SearchPage = () => {
 				</div>
 			</div>
 			<div className={ styles.cardsWrapper }>
-				{ mock.map(x =>
-					<SearchCard
-						addFav={ addFav }
-						removeFav={ removeFav }
-						favourites={ [] }
-						movie={ mockedMovie }
-					/>) }
+				{
+					movies.length > 0
+						? movies.map(x =>
+							<SearchCard
+								addFav={ addFav }
+								removeFav={ removeFav }
+								favourites={ favs }
+								movie={ x }
+								key={ x.imdbId }
+							/>)
+						: <div>No matches</div>
+				}
 			</div>
 		</section>
 
