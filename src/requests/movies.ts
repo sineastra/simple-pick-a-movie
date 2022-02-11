@@ -2,11 +2,23 @@ import { FavCardMovieIntF, SearchCardMovieIntF } from "../_interfaces/movies"
 import { baseAPIRequest } from "./baseRequest"
 
 
+const getDetailedInfo = (movie: any): SearchCardMovieIntF => {
+	return {
+		imdbId: movie.externals.imdb,
+		poster: movie.image.medium,
+		title: movie.name,
+		genres: movie.genres,
+		runtime: movie.runtime,
+		officialSite: movie.officialSite,
+		description: movie.summary,
+	}
+}
+
 interface moviesRequestsIntF {
 	getFavs: (ids: string[]) => Promise<FavCardMovieIntF[]>,
 	getSearchs: (query: string) => Promise<SearchCardMovieIntF[]>,
+	getDetails: (id: string) => Promise<SearchCardMovieIntF>
 }
-
 const movieRequests: moviesRequestsIntF = {
 	getFavs: async (ids) => {
 		const fetchReq = async (id: string): Promise<FavCardMovieIntF> => {
@@ -27,18 +39,15 @@ const movieRequests: moviesRequestsIntF = {
 	getSearchs: async (query) => {
 		const movieData = await baseAPIRequest(`/search/shows?q=${ query }`)
 		const movies: SearchCardMovieIntF[] = movieData.map((x: any) => {
-			return {
-				imdbId: x.externals.imdb,
-				poster: x.image.medium,
-				title: x.name,
-				genres: x.genres,
-				runtime: x.runtime,
-				officialSite: x.officialSite,
-				description: x.summary,
-			}
+			return getDetailedInfo(x)
 		})
 
 		return movies
+	},
+	getDetails: async (id) => {
+		const movieData = await baseAPIRequest(`/lookup/shows?imdb=${ id }`)
+
+		return getDetailedInfo(movieData)
 	},
 }
 
