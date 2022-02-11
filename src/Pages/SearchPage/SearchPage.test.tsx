@@ -148,7 +148,6 @@ describe("---> Testing /Pages/SearchPage state functionality", () => {
 		await act(async () => {
 			await user.click(remove[0])
 		})
-
 		const state = store.getState()
 
 		expect(state.userData.favourites).toEqual([])
