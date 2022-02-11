@@ -1,3 +1,27 @@
-
+.wrapper {
+  width: 100%;
+  padding-top: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.wrapper .innerWrapper {
+  width: 80%;
+  padding: 20px;
+}
+.wrapper .textAreaWrapper {
+  margin-top: 20px;
+  width: 600px;
+  height: 250px;
+}
+.wrapper .textAreaWrapper textarea {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  resize: none;
+  padding: 20px;
+}
 
 /*# sourceMappingURL=DetailsPage.module.css.map */

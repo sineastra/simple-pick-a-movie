@@ -30,19 +30,22 @@ const userSlice = createSlice({
 		addRating: (state: userData, action: PayloadAction<ratingIntF>) => {
 			const index = findExistingIndex(state.ratings, action.payload)
 
-			if (index === -1) {
-				state.ratings.push(action.payload)
-			} else {
-				state.ratings[index].rating = action.payload.rating
+			if (action.payload._id !== '') {
+				if (index === -1) {
+					state.ratings.push(action.payload)
+				} else {
+					state.ratings[index].rating = action.payload.rating
+				}
 			}
 		},
 		addComment: (state: userData, action: PayloadAction<ratingIntF>) => {
 			const index = findExistingIndex(state.ratings, action.payload)
-
-			if (index === -1) {
-				state.ratings.push(action.payload)
-			} else {
-				state.ratings[index].privateComment = action.payload.privateComment
+			if (action.payload._id !== '') {
+				if (index === -1) {
+					state.ratings.push(action.payload)
+				} else {
+					state.ratings[index].privateComment = action.payload.privateComment
+				}
 			}
 		},
 	},

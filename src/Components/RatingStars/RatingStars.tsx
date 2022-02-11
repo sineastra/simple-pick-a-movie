@@ -2,16 +2,19 @@ import React, { useState } from 'react'
 import { Rating } from 'react-simple-star-rating'
 
 
-const RatingStars = () => {
-	const [rating, setRating] = useState(0)
+interface propsIntF {
+	initialRating: number | undefined,
+	onChange?: (newRating: number) => void,
+}
+const RatingStars = ({ initialRating, onChange }: propsIntF) => {
+	const [rating, setRating] = useState(initialRating || 0)
 
-	const handleRating = (rate: number) => {
-		setRating(rate)
-
+	const handleRating = (rating: number) => {
+		setRating(rating / 20)
+		onChange && onChange(rating)
 	}
 
 	return (
-
 		<Rating onClick={ handleRating } ratingValue={ rating }/>
 	)
 }

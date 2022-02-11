@@ -1,12 +1,15 @@
-import { act, render, screen } from "@testing-library/react"
+import { act, fireEvent, getByTitle, render, screen } from "@testing-library/react"
 import store from "../../_state/app/store"
-import { addFavourite, removeFavourite } from "../../_state/features/userSlice"
+import { addFavourite, addRating, removeFavourite } from "../../_state/features/userSlice"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import DetailsPage from "./DetailsPage"
 import { SearchCardMovieIntF } from "../../_interfaces/movies"
 import { movieRequests } from "../../requests/movies"
 import user from "@testing-library/user-event"
+import { ratingIntF } from "../../_interfaces/state"
+import RatingStars from "../../Components/RatingStars/RatingStars"
+import exp from "constants"
 
 
 const renderScreen = () => render(
@@ -24,6 +27,11 @@ const mockedSearchMovie: SearchCardMovieIntF = {
 	runtime: 1,
 	officialSite: 'b',
 	description: 'b',
+}
+const mockedInitialRating: ratingIntF = {
+	_id: 'a',
+	rating: 0,
+	privateComment: '',
 }
 jest.mock("../../requests/movies", () => {
 	return {
@@ -46,6 +54,7 @@ describe("---> Testing /Pages/DetailsPage functionality", () => {
 
 	beforeEach(async () => {
 		spy = jest.spyOn(movieRequests, 'getDetails')
+		store.dispatch(addRating(mockedInitialRating))
 	})
 
 	afterEach(() => {
@@ -78,7 +87,6 @@ describe("---> Testing /Pages/DetailsPage functionality", () => {
 		expect(state.userData.favourites).toEqual(['a'])
 	})
 	it("correctly removes a favourite from the store", async () => {
-
 		await act(async () => {
 			await store.dispatch(addFavourite('a'))
 		})
@@ -91,5 +99,15 @@ describe("---> Testing /Pages/DetailsPage functionality", () => {
 		const state = store.getState()
 
 		expect(state.userData.favourites).toEqual([])
+	})
+	it("correctly updates private comment redux state", async () => {
+		await act(async () => {
+			await renderScreen()
+		})
+		const textbox = screen.getByRole('textbox')
+		await user.type(textbox, '{a}')
+		const state = store.getState()
+
+		expect(state.userData.ratings[0].privateComment).toBe('a')
 	})
 })
