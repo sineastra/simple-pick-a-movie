@@ -4,14 +4,14 @@ import { Rating } from 'react-simple-star-rating'
 
 interface propsIntF {
 	initialRating: number | undefined,
-	onChange?: (newRating: number) => void,
+	onChange: (newRating: number) => void,
 }
 const RatingStars = ({ initialRating, onChange }: propsIntF) => {
 	const [rating, setRating] = useState(initialRating || 0)
 
-	const handleRating = (rating: number) => {
-		setRating(rating / 20)
-		onChange && onChange(rating)
+	const handleRating = (r: number) => {
+		setRating(r)
+		onChange(r)
 	}
 
 	return (

@@ -1,25 +1,31 @@
 import renderer from "react-test-renderer"
 import { BrowserRouter } from "react-router-dom"
 import Favourites from "./Favourites"
-import { FavCardMovieIntF } from "../../_interfaces/movies"
+import { movieIntF } from "../../_interfaces/movies"
 
 
-const renderTree = (movies: FavCardMovieIntF[]) =>
+const renderTree = (movies: movieIntF[]) =>
 	renderer.create(
 		<BrowserRouter>
-			<Favourites movies={ movies }/>
+			<Favourites favs={ movies }/>
 		</BrowserRouter>,
 	)
-const mockedMovies: FavCardMovieIntF[] = [{
-	imdbId: 'a',
+const mockedMovies: movieIntF[] = [{
+	externalId: 'a',
 	poster: 'b',
 	title: 'c',
 	genres: ['d', 'e'],
+	runtime: 1,
+	officialSite: 'b',
+	description: 'b',
 }, {
-	imdbId: 'd',
+	externalId: 'd',
 	poster: 'c',
 	title: 'b',
 	genres: ['a', 'b'],
+	runtime: 1,
+	officialSite: 'b',
+	description: 'b',
 }]
 
 describe("---> Testing /Components/Favourites", () => {

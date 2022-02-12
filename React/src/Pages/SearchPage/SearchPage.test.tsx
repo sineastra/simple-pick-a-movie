@@ -3,15 +3,15 @@ import { act, render, screen } from "@testing-library/react"
 import SearchPage from "./SearchPage"
 import { addFavourite, removeFavourite } from "../../_state/features/userSlice"
 import { Provider } from "react-redux"
-import { SearchCardMovieIntF } from "../../_interfaces/movies"
 import { movieRequests } from "../../requests/movies"
 import user from "@testing-library/user-event"
 import store from "../../_state/app/store"
+import { movieIntF } from "../../_interfaces/movies"
 
 
-let mockGetSearchReturn: SearchCardMovieIntF[] = []
-const mockedSearchMovie: SearchCardMovieIntF = {
-	imdbId: 'b',
+let mockGetSearchReturn: movieIntF[] = []
+const mockedSearchMovie: movieIntF = {
+	externalId: 'b',
 	poster: 'b',
 	title: 'a',
 	genres: ['b'],
@@ -82,7 +82,7 @@ describe("---> Testing the /Pages/SearchPage network calls", () => {
 			writable: true,
 			value: location,
 		})
-		mockGetSearchReturn = [mockedSearchMovie, { ...mockedSearchMovie, imdbId: 'c' }]
+		mockGetSearchReturn = [mockedSearchMovie, { ...mockedSearchMovie, externalId: 'c' }]
 
 		await act(async () => {
 			await renderScreen()
@@ -99,7 +99,7 @@ describe("---> Testing the /Pages/SearchPage network calls", () => {
 
 describe("---> Testing /Pages/SearchPage state functionality", () => {
 	beforeEach(async () => {
-		mockGetSearchReturn = [mockedSearchMovie, { ...mockedSearchMovie, imdbId: 'a' }]
+		mockGetSearchReturn = [mockedSearchMovie, { ...mockedSearchMovie, externalId: 'a' }]
 
 		const location = {
 			...global.location,
@@ -134,10 +134,7 @@ describe("---> Testing /Pages/SearchPage state functionality", () => {
 	it("correctly adds a favourite to the store", async () => {
 		const add = screen.getAllByText(/add to Favourites/i)
 
-		await act(async () => {
-			await user.click(add[0])
-		})
-
+		await user.click(add[0])
 		const state = store.getState()
 
 		expect(state.userData.favourites).toEqual(['a', 'b'])

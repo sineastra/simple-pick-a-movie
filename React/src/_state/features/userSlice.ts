@@ -1,13 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { ratingIntF, userData } from "../../_interfaces/state"
+import { movieInteractionIntF, userData } from "../../_interfaces/state"
+import { movieIntF } from "../../_interfaces/movies"
 
 
-const findExistingIndex = (ratings: ratingIntF[], newRating: ratingIntF) =>
-	ratings.findIndex(x => x._id === newRating._id)
-
-const initialState: userData = {
+const initialState = {
 	favourites: [],
-	ratings: [],
 }
 const userSlice = createSlice({
 	name: 'userData',
@@ -19,37 +16,23 @@ const userSlice = createSlice({
 			}
 		},
 		removeFavourite: (state: userData, action: PayloadAction<string | undefined>) => {
-			const index = state.favourites.find(x => x === action.payload)
+			const index = state.favourites.findIndex(x => x === action.payload)
 
 			if (action.payload === undefined) {
 				state.favourites = []
-			} else if (index) {
+			} else if (index !== -1) {
 				state.favourites.splice(Number(index), 1)
 			}
 		},
-		addRating: (state: userData, action: PayloadAction<ratingIntF>) => {
-			const index = findExistingIndex(state.ratings, action.payload)
-
-			if (action.payload._id !== '') {
-				if (index === -1) {
-					state.ratings.push(action.payload)
-				} else {
-					state.ratings[index].rating = action.payload.rating
-				}
-			}
-		},
-		addComment: (state: userData, action: PayloadAction<ratingIntF>) => {
-			const index = findExistingIndex(state.ratings, action.payload)
-			if (action.payload._id !== '') {
-				if (index === -1) {
-					state.ratings.push(action.payload)
-				} else {
-					state.ratings[index].privateComment = action.payload.privateComment
-				}
-			}
+		initFavourites: (state: userData, action: PayloadAction<string[]>) => {
+			state.favourites = action.payload
 		},
 	},
 })
 
-export const { addFavourite, addRating, addComment, removeFavourite } = userSlice.actions
+export const {
+	addFavourite,
+	removeFavourite,
+	initFavourites,
+} = userSlice.actions
 export default userSlice.reducer

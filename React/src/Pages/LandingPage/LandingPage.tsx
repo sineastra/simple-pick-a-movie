@@ -1,31 +1,32 @@
 import HeroSection from "../../Components/HeroSection/HeroSection"
 import Favourites from "../../Components/Favourites/Favourites"
-import { FavCardMovieIntF } from "../../_interfaces/movies"
+import { movieIntF } from "../../_interfaces/movies"
 import { useSelector } from "react-redux"
 import { RootState } from "../../_state/app/store"
 import { useEffect, useState } from "react"
 import { movieRequests } from "../../requests/movies"
+import { userRequests } from "../../requests/user"
+
 
 const LandingPage = () => {
-	const [movies, setMovies] = useState<FavCardMovieIntF[]>([])
-	const moviesIds: string[] = useSelector((state: RootState) => state.userData.favourites)
-
+	const [favMovies, setFavMovies] = useState<movieIntF[] | null>(null)
+	const favIds: movieIntF[] = useSelector((state: RootState) => state.userData.favourites)
+	
 	useEffect(() => {
 		const getData = async () => {
-			if (moviesIds.length > 0) {
-				const data = await movieRequests.getFavs(moviesIds)
+			const data = await userRequests.getFavs()
 
-				setMovies(data)
-			}
+			setFavMovies(data)
 		}
 
 		getData()
-	}, [moviesIds])
+	},[favIds])
 
 	return (
+		favMovies &&
 		<>
 			<HeroSection/>
-			<Favourites movies={ movies }/>
+			<Favourites favs={ favMovies }/>
 		</>
 	)
 }

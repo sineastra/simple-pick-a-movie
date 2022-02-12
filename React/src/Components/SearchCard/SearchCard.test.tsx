@@ -1,12 +1,12 @@
-import { SearchCardMovieIntF } from "../../_interfaces/movies"
+import { movieIntF } from "../../_interfaces/movies"
 import { render, RenderResult, screen } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 import SearchCard from "./SearchCard"
 import user from "@testing-library/user-event"
 
 
-const mockedMovie: SearchCardMovieIntF = {
-	imdbId: 'a',
+const mockedMovie: movieIntF = {
+	externalId: 'a',
 	poster: 'b',
 	title: 'c',
 	genres: ['a', 'b', 'c'],
@@ -22,7 +22,7 @@ const removeFavMock = jest.fn(() => {
 	console.log('removed')
 })
 
-const renderScreen = (movie: SearchCardMovieIntF, favourites: string[]) =>
+const renderScreen = (movie: movieIntF, favourites: string[]) =>
 	render(
 		<BrowserRouter>
 			<SearchCard movie={ movie } favourites={ favourites } addFav={ addFavMock } removeFav={ removeFavMock }/>

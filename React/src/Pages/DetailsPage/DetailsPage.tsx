@@ -1,49 +1,65 @@
 import RatingStars from "../../Components/RatingStars/RatingStars"
 import SearchCard from "../../Components/SearchCard/SearchCard"
-import { BaseSyntheticEvent, useEffect, useState } from "react"
-import { SearchCardMovieIntF } from "../../_interfaces/movies"
+import { BaseSyntheticEvent, useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { movieRequests } from "../../requests/movies"
 import { useSelector } from "react-redux"
 import store, { RootState } from "../../_state/app/store"
-import { addComment, addFavourite, addRating, removeFavourite } from "../../_state/features/userSlice"
+import { addFavourite, removeFavourite } from "../../_state/features/userSlice"
 import styles from "./DetailsPage.module.scss"
-import { ratingIntF } from "../../_interfaces/state"
+import { TimeoutId } from "@reduxjs/toolkit/dist/query/core/buildMiddleware/types"
+import { userRequests } from "../../requests/user"
+import { movieIntF } from "../../_interfaces/movies"
 
 
 const DetailsPage = () => {
 	const params = useParams()
-	const [movie, setMovie] = useState<SearchCardMovieIntF | null>(null)
-	const userData = useSelector((state: RootState) => state.userData)
+	const favs = useSelector((state: RootState) => state.userData.favourites)
+	const [movie, setMovie] = useState<movieIntF | null>(null)
+	const [notes, setNotes] = useState<string>('')
+	const [rating, setRating] = useState<number>(0)
+	const timeout = useRef<TimeoutId | null>(null)
 
-	const ratingObj: ratingIntF = {
-		_id: params.id || '',
-		rating: 0,
-		privateComment: '',
+	const addFav = async (fav: string) => {
+		await store.dispatch(addFavourite(fav))
+		await userRequests.updateFav(fav)
 	}
-	const movieRating = userData.ratings.find(x => x._id === params.id) || ratingObj
-
-	const addFav = async (favId: string) => {
-		await store.dispatch(addFavourite(favId))
-	}
-	const removeFav = async (favId: string) => {
-		await store.dispatch(removeFavourite(favId))
+	const removeFav = async (fav: string) => {
+		await store.dispatch(removeFavourite(fav))
+		await userRequests.updateFav(fav)
 	}
 	const updateRating = async (newRating: number) => {
-		await store.dispatch(addRating({ ...ratingObj, rating: newRating }))
+		movie && await userRequests.updateRating(movie.externalId, newRating)
 	}
-	const updatePrivateComment = async (e: BaseSyntheticEvent) => {
-		await store.dispatch(addComment({ ...ratingObj, privateComment: e.target.value }))
+	const updateNote = async (e: BaseSyntheticEvent) => {
+		const note = e.target.value
+		setNotes(note)
+
+		if (timeout.current) {
+			clearTimeout(timeout.current)
+		}
+
+		timeout.current = setTimeout(async () => {
+			movie && await userRequests.updateNote(movie.externalId, note)
+		}, 1000)
 	}
 
 	useEffect(() => {
 		if (typeof params.id === 'string' && params.id !== '') {
 			const paramsTemp: string = params.id
+			//TODO: Change the user with redux state
+			const userId = '620772b331579175679664d1'
 
 			const getData = async () => {
-				const data = await movieRequests.getDetails(paramsTemp)
+				const movieData = await movieRequests.getDetails(paramsTemp)
+				const userMovieData = await userRequests.getMovieDetailsForUser(paramsTemp)
 
-				setMovie(data)
+				const notesData = userMovieData.note
+				const ratingData = userMovieData.rating
+
+				notesData && setNotes(notesData)
+				ratingData && setRating(ratingData)
+				setMovie(movieData)
 			}
 
 			getData()
@@ -54,14 +70,17 @@ const DetailsPage = () => {
 		movie &&
 		<section className={ styles.wrapper }>
 			<div className={ styles.innerWrapper }>
-				<SearchCard movie={ movie } favourites={ userData.favourites } removeFav={ removeFav }
-				            addFav={ addFav }/>
-				<RatingStars initialRating={ movieRating.rating } onChange={ updateRating }/>
+				<SearchCard
+					movie={ movie }
+					favourites={ favs }
+					removeFav={ removeFav }
+					addFav={ addFav }/>
+				<RatingStars initialRating={ rating } onChange={ updateRating }/>
 				<div className={ styles.textAreaWrapper }>
 					<textarea name="textarea"
-					          onChange={ updatePrivateComment }
+					          onChange={ updateNote }
 					          placeholder="Your private notes and comments about the movie..."
-					          value={ movieRating.privateComment }
+					          value={ notes }
 					/>
 				</div>
 			</div>

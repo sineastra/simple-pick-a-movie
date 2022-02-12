@@ -14,6 +14,12 @@
             margin: 0;
         }
 
+        & .description  {
+            margin: 0;
+            max-height: 35%;
+            overflow-y: scroll;
+        }
+
         & > button {
             padding: 20px;
             border-radius: 7px;

@@ -1,15 +1,15 @@
 import { act, fireEvent, getByTitle, render, screen } from "@testing-library/react"
 import store from "../../_state/app/store"
-import { addFavourite, addRating, removeFavourite } from "../../_state/features/userSlice"
+import { addFavourite, removeFavourite } from "../../_state/features/userSlice"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import DetailsPage from "./DetailsPage"
-import { SearchCardMovieIntF } from "../../_interfaces/movies"
 import { movieRequests } from "../../requests/movies"
 import user from "@testing-library/user-event"
-import { ratingIntF } from "../../_interfaces/state"
+import { movieInteractionIntF } from "../../_interfaces/state"
 import RatingStars from "../../Components/RatingStars/RatingStars"
 import exp from "constants"
+import { movieIntF } from "../../_interfaces/movies"
 
 
 const renderScreen = () => render(
@@ -19,8 +19,8 @@ const renderScreen = () => render(
 		</BrowserRouter>,
 	</Provider>,
 )
-const mockedSearchMovie: SearchCardMovieIntF = {
-	imdbId: 'a',
+const mockedSearchMovie: movieIntF = {
+	externalId: 'a',
 	poster: 'b',
 	title: 'b',
 	genres: ['b'],
@@ -28,7 +28,7 @@ const mockedSearchMovie: SearchCardMovieIntF = {
 	officialSite: 'b',
 	description: 'b',
 }
-const mockedInitialRating: ratingIntF = {
+const mockedInitialRating: movieInteractionIntF = {
 	_id: 'a',
 	rating: 0,
 	privateComment: '',
@@ -54,7 +54,7 @@ describe("---> Testing /Pages/DetailsPage functionality", () => {
 
 	beforeEach(async () => {
 		spy = jest.spyOn(movieRequests, 'getDetails')
-		store.dispatch(addRating(mockedInitialRating))
+		// store.dispatch(addRating(mockedInitialRating))
 	})
 
 	afterEach(() => {
@@ -108,6 +108,7 @@ describe("---> Testing /Pages/DetailsPage functionality", () => {
 		await user.type(textbox, '{a}')
 		const state = store.getState()
 
-		expect(state.userData.ratings[0].privateComment).toBe('a')
+		expect('a').toBe('b')
+		// expect(state.userData.ratings[0].privateComment).toBe('a')
 	})
 })
