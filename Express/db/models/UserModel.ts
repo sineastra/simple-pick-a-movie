@@ -4,7 +4,7 @@ import { userInterface } from "../../_interfaces/userInterfaces"
 
 const UserSchema = new mongoose.Schema<userInterface>({
 	name: String,
-	hashedPassword: String,
+	password: String,
 	favourites: [{ type: String, default: [] }],
 	notes: [
 		{
