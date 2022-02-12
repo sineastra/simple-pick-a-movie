@@ -2,7 +2,7 @@ import { BrowserRouter } from "react-router-dom"
 import LandingPage from "./LandingPage"
 import { Provider } from "react-redux"
 import { configureStore } from "@reduxjs/toolkit"
-import userReducer, { addFavourite } from "../../_state/features/userSlice"
+import userReducer from "../../_state/features/userSlice"
 import { act, render, screen } from "@testing-library/react"
 import { movieRequests } from "../../requests/movies"
 
@@ -56,10 +56,6 @@ describe("---> Testing the Landing Page", () => {
 		expect(gridContainer).toBeNull()
 	})
 	it("should render properly based on redux state -> existing fav movies", async () => {
-		await act(async () => {
-			await store.dispatch(addFavourite('a'))
-		})
-
 		await act(async () => {
 			await render(
 				<Provider store={ store }>

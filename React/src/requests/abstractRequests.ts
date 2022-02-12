@@ -49,6 +49,7 @@ const abstractRequest = async ({ uri, body = {}, method }: abstractReqIntF): Pro
 }
 
 const abstractJSONRequest = ({ uri, body, method = 'POST' }: abstractJSONRequestIntF) => {
+	console.log(body)
 	const modifBody = {
 		headers: {
 			'Content-Type': 'application/json',

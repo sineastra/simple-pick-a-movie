@@ -7,12 +7,13 @@ import { descriptionPipe, genresPipe, imagePipe } from "../../utils/pipes"
 
 interface propsIntF {
 	movie: movieIntF,
-	favourites: string[],
-	addFav: (f: string) => void,
-	removeFav: (f: string) => void,
+	favourites: movieIntF[],
+	updateFav: (f: string) => void,
 }
-const SearchCard = ({ movie, favourites, addFav, removeFav }: propsIntF) => {
-	const isFav = favourites.some(x => x === movie.externalId)
+const SearchCard = ({ movie, favourites, updateFav }: propsIntF) => {
+	const isFav = favourites.some(x => x.externalId === movie.externalId)
+	console.log(favourites)
+	console.log(movie)
 
 	return (
 		<div className={ styles.mainWrapper } role="poster">
@@ -35,11 +36,11 @@ const SearchCard = ({ movie, favourites, addFav, removeFav }: propsIntF) => {
 				{ isFav
 					? <button
 						className={ styles.removeBtn }
-						onClick={ (e) => removeFav(movie.externalId) }>Remove From Favourites
+						onClick={ (e) => updateFav(movie.externalId) }>Remove From Favourites
 					</button>
 					: <button
 						className={ styles.addBtn }
-						onClick={ (e) => addFav(movie.externalId) }>Add To Favourites
+						onClick={ (e) => updateFav(movie.externalId) }>Add To Favourites
 					</button>
 				}
 			</div>

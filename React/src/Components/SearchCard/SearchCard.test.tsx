@@ -3,6 +3,7 @@ import { render, RenderResult, screen } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 import SearchCard from "./SearchCard"
 import user from "@testing-library/user-event"
+import mocked = jest.mocked
 
 
 const mockedMovie: movieIntF = {
@@ -15,17 +16,14 @@ const mockedMovie: movieIntF = {
 	description: 'e',
 }
 
-const addFavMock = jest.fn(() => {
-	console.log('added')
-})
-const removeFavMock = jest.fn(() => {
-	console.log('removed')
+const updateFavMock = jest.fn(() => {
+	console.log('updated')
 })
 
-const renderScreen = (movie: movieIntF, favourites: string[]) =>
+const renderScreen = (movie: movieIntF, favourites: movieIntF[]) =>
 	render(
 		<BrowserRouter>
-			<SearchCard movie={ movie } favourites={ favourites } addFav={ addFavMock } removeFav={ removeFavMock }/>
+			<SearchCard movie={ movie } favourites={ favourites }  updateFav={ updateFavMock }/>
 		</BrowserRouter>,
 	)
 
@@ -36,26 +34,18 @@ describe("---> Testing output of /Components/SearchCard", () => {
 
 		expect(btn.textContent).toMatch(/add to favourites/i)
 	})
-	it("shows correct button when the movie is A facourite", () => {
-		renderScreen(mockedMovie, ['a'])
+	it("shows correct button when the movie is A favourite", () => {
+		renderScreen(mockedMovie, [mockedMovie])
 		const btn = screen.getByRole('button')
 
 		expect(btn.textContent).toMatch(/remove from favourites/i)
 	})
-	it("correctly calls addFav", async () => {
-		renderScreen(mockedMovie, [])
+	it("correctly calls updateFav", async () => {
+		renderScreen(mockedMovie, [mockedMovie])
 		const btn = screen.getByRole('button')
 
 		await user.click(btn)
 
-		expect(addFavMock).toHaveBeenCalled()
-	})
-	it("correctly calls removeFav", async () => {
-		renderScreen(mockedMovie, ['a'])
-		const btn = screen.getByRole('button')
-
-		await user.click(btn)
-
-		expect(removeFavMock).toHaveBeenCalled()
+		expect(updateFavMock).toHaveBeenCalled()
 	})
 })

@@ -10,7 +10,6 @@ import { userRequests } from "../../requests/user"
 
 const LandingPage = () => {
 	const [favMovies, setFavMovies] = useState<movieIntF[] | null>(null)
-	const favIds: movieIntF[] = useSelector((state: RootState) => state.userData.favourites)
 	
 	useEffect(() => {
 		const getData = async () => {
@@ -20,7 +19,7 @@ const LandingPage = () => {
 		}
 
 		getData()
-	},[favIds])
+	},[])
 
 	return (
 		favMovies &&

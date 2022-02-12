@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import AppRouter from "./AppRouter"
-import { userRequests } from "../requests/user"
 import store from "../_state/app/store"
-import { initFavourites } from "../_state/features/userSlice"
-import { movieIntF } from "../_interfaces/movies"
+import { changeUser } from "../_state/features/userSlice"
+import jwt_decode from "jwt-decode"
+import { userData } from "../_interfaces/state"
 
 
 function App () {
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		const initialStateAssign = async () => {
-			const favs = await userRequests.getFavs()
-			const favIds = favs.map(x => x.externalId)
+		const b = document.cookie.match("(^|;)\\s*" + process.env.REACT_APP_COOKIE_NAME + "\\s*=\\s*([^;]+)")
+		const jwtCookie = b ? b.pop() : ""
+		
+		console.log(jwtCookie)
 
-			await store.dispatch(initFavourites(favIds))
-			setIsLoading(false)
+		if (jwtCookie) {
+			const user = jwt_decode(jwtCookie)
+			store.dispatch(changeUser(user as userData))
 		}
 
-		initialStateAssign()
+		setIsLoading(false)
 	}, [])
 
 	return (

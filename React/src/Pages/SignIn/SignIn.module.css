@@ -1,0 +1,41 @@
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.wrapper > section {
+  width: 700px;
+  border: 1px solid white;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-content: initial;
+}
+.wrapper > section > form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.wrapper > section > form > h1 {
+  margin-top: 0;
+}
+.wrapper > section > form > input {
+  width: 200px;
+  text-indent: 5px;
+  padding: 5px;
+}
+.wrapper > section > form > button {
+  margin-top: 10px;
+}
+
+/*# sourceMappingURL=SignIn.module.css.map */

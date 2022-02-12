@@ -5,9 +5,14 @@ Array [
   <header
     className="header"
   >
-    <h1>
-      My Movie Collection
-    </h1>
+    <a
+      href="/"
+      onClick={[Function]}
+    >
+      <h1>
+        My Movie Collection
+      </h1>
+    </a>
     <form
       className="form"
       onSubmit={[Function]}

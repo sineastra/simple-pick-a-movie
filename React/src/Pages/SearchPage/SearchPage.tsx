@@ -4,9 +4,6 @@ import styles from "./SearchPage.module.scss"
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { movieIntF } from "../../_interfaces/movies"
-import { useSelector } from "react-redux"
-import store, { RootState } from "../../_state/app/store"
-import { addFavourite, removeFavourite } from "../../_state/features/userSlice"
 import { userRequests } from "../../requests/user"
 import { movieRequests } from "../../requests/movies"
 
@@ -14,25 +11,24 @@ import { movieRequests } from "../../requests/movies"
 const SearchPage = () => {
 	const location = useLocation()
 	const [movies, setMovies] = useState<movieIntF[]>([])
-	const favs = useSelector((state: RootState) => state.userData.favourites)
+	const [favs, setFavs] = useState<movieIntF[]>([])
 
 	//TODO: abstract these.
-	const addFav = async (fav: string) => {
-		await store.dispatch(addFavourite(fav))
-		await userRequests.updateFav(fav)
-	}
-	const removeFav = async (fav: string) => {
-		await store.dispatch(removeFavourite(fav))
+	const updateFav = async (fav: string) => {
 		await userRequests.updateFav(fav)
 	}
 
 	useEffect(() => {
 		const search = location.search
-		const getSearchResult = async () => {
-			const result = await movieRequests.getSearchs(search)
-			console.log(result)
 
-			setMovies(result)
+		const getSearchResult = async () => {
+			const [moviesData, favsData] = await Promise.all([
+				movieRequests.getSearchs(search),
+				userRequests.getFavs(),
+			])
+
+			setMovies(moviesData)
+			setFavs(favsData)
 		}
 
 		if (search) {
@@ -53,8 +49,7 @@ const SearchPage = () => {
 					movies.length > 0
 						? movies.map(x =>
 							<SearchCard
-								addFav={ addFav }
-								removeFav={ removeFav }
+								updateFav={ updateFav }
 								favourites={ favs }
 								movie={ x }
 								key={ x.externalId }

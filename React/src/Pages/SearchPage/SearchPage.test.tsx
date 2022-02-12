@@ -1,7 +1,6 @@
 import { BrowserRouter } from "react-router-dom"
 import { act, render, screen } from "@testing-library/react"
 import SearchPage from "./SearchPage"
-import { addFavourite, removeFavourite } from "../../_state/features/userSlice"
 import { Provider } from "react-redux"
 import { movieRequests } from "../../requests/movies"
 import user from "@testing-library/user-event"
@@ -10,6 +9,9 @@ import { movieIntF } from "../../_interfaces/movies"
 
 
 let mockGetSearchReturn: movieIntF[] = []
+let mockUpdateFavReturn: movieIntF[] = []
+let mockGetFavsReturn: movieIntF[] = []
+
 const mockedSearchMovie: movieIntF = {
 	externalId: 'b',
 	poster: 'b',
@@ -22,8 +24,26 @@ const mockedSearchMovie: movieIntF = {
 jest.mock("../../requests/movies", () => {
 	return {
 		movieRequests: {
-			getSearchs: async (s: string) => {
+			getSearchs: (s: string) => {
 				return mockGetSearchReturn
+			},
+		},
+	}
+})
+jest.mock("../../requests/user", () => {
+	return {
+		userRequests: {
+			updateFav: (s: string) => {
+				const index = mockUpdateFavReturn.findIndex(x => x.externalId === s)
+
+				if (index !== -1) {
+					return mockUpdateFavReturn.splice(index, 1)
+				} else {
+					mockUpdateFavReturn.push({ ...mockedSearchMovie, externalId: s })
+				}
+			},
+			getFavs: () => {
+				return mockGetFavsReturn
 			},
 		},
 	}
@@ -46,6 +66,7 @@ describe("---> Testing the /Pages/SearchPage network calls", () => {
 	afterEach(() => {
 		spy.mockRestore()
 		mockGetSearchReturn = []
+		global.location.search = ''
 	})
 
 	it("correctly renders when there are no search query", () => {
@@ -56,14 +77,6 @@ describe("---> Testing the /Pages/SearchPage network calls", () => {
 		expect(movieRequests.getSearchs).not.toHaveBeenCalled()
 	})
 	it("renders correctly when there are no search results", async () => {
-		const location = {
-			...global.location,
-			search: 'q=a',
-		}
-		Object.defineProperty(global, 'location', {
-			writable: true,
-			value: location,
-		})
 		await act(async () => {
 			await renderScreen()
 		})
@@ -94,59 +107,5 @@ describe("---> Testing the /Pages/SearchPage network calls", () => {
 		expect(noSearch).not.toBeInTheDocument()
 		expect(movieRequests.getSearchs).toHaveBeenCalledTimes(1)
 		expect(posters.length).toBe(2)
-	})
-})
-
-describe("---> Testing /Pages/SearchPage state functionality", () => {
-	beforeEach(async () => {
-		mockGetSearchReturn = [mockedSearchMovie, { ...mockedSearchMovie, externalId: 'a' }]
-
-		const location = {
-			...global.location,
-			search: 'q=a',
-		}
-		Object.defineProperty(global, 'location', {
-			writable: true,
-			value: location,
-		})
-
-		await act(async () => {
-			await store.dispatch(addFavourite('a'))
-		})
-
-		await act(async () => {
-			await renderScreen()
-		})
-	})
-
-	afterEach(() => {
-		mockGetSearchReturn = []
-		store.dispatch(removeFavourite(undefined))
-	})
-
-	it("correctly reads redux favourites state and renders with the proper info", async () => {
-		const remove = screen.getAllByText(/Remove From Favourites/i)
-		const add = screen.getAllByText(/add to Favourites/i)
-
-		expect(remove.length).toBe(1)
-		expect(add.length).toBe(1)
-	})
-	it("correctly adds a favourite to the store", async () => {
-		const add = screen.getAllByText(/add to Favourites/i)
-
-		await user.click(add[0])
-		const state = store.getState()
-
-		expect(state.userData.favourites).toEqual(['a', 'b'])
-	})
-	it("correctly removes a favourite from the store", async () => {
-		const remove = screen.getAllByText(/Remove From Favourites/i)
-
-		await act(async () => {
-			await user.click(remove[0])
-		})
-		const state = store.getState()
-
-		expect(state.userData.favourites).toEqual([])
 	})
 })

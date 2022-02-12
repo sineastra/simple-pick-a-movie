@@ -1,6 +1,5 @@
 import { act, fireEvent, getByTitle, render, screen } from "@testing-library/react"
 import store from "../../_state/app/store"
-import { addFavourite, removeFavourite } from "../../_state/features/userSlice"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import DetailsPage from "./DetailsPage"
@@ -58,14 +57,10 @@ describe("---> Testing /Pages/DetailsPage functionality", () => {
 	})
 
 	afterEach(() => {
-		store.dispatch(removeFavourite(undefined))
 		spy.mockRestore()
 	})
 
 	it("correctly reads redux favourites state and renders with the proper info", async () => {
-		await act(async () => {
-			await store.dispatch(addFavourite('a'))
-		})
 		await act(async () => {
 			await renderScreen()
 		})
@@ -84,12 +79,9 @@ describe("---> Testing /Pages/DetailsPage functionality", () => {
 		await user.click(add)
 		const state = store.getState()
 
-		expect(state.userData.favourites).toEqual(['a'])
+		expect(state).toEqual(['a'])
 	})
 	it("correctly removes a favourite from the store", async () => {
-		await act(async () => {
-			await store.dispatch(addFavourite('a'))
-		})
 		await act(async () => {
 			await renderScreen()
 		})
@@ -98,7 +90,7 @@ describe("---> Testing /Pages/DetailsPage functionality", () => {
 		await user.click(remove)
 		const state = store.getState()
 
-		expect(state.userData.favourites).toEqual([])
+		expect(state).toEqual([])
 	})
 	it("correctly updates private comment redux state", async () => {
 		await act(async () => {
