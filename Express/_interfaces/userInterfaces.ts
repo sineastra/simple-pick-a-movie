@@ -1,12 +1,10 @@
 import { Request } from "express"
-import jwt from "jsonwebtoken"
 
 
 export type noteType = { movieId: string, note: string }
 export type ratingType = { movieId: string, rating: string }
 
-export interface userInterface {
-	_id?: string,
+export interface baseUserInterface {
 	name: String,
 	password: String,
 	favourites: string[],
@@ -14,6 +12,16 @@ export interface userInterface {
 	ratings: ratingType[],
 }
 
+export interface userInterface extends baseUserInterface{
+	_id: string,
+}
+
 export interface extendedRequestIntF extends Request {
-	user: any
+	user: requestUserIntF
+}
+
+export interface requestUserIntF {
+	_id: string,
+	name: string,
+	iat?: number,
 }

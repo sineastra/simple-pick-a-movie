@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
 })
 router.get('/:id', async (req, res) => {
 	const movie = await apiServices.getDetails(req.params.id)
-	console.log(movie)
 
 	res.json({ status: 'ok', statusCode: 200, data: movie })
 })

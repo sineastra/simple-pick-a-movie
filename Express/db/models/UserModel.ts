@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema<userInterface>({
 			type: {
 				movieId: String,
 				note: String,
+				default: '',
 			},
 			default: [],
 		},
@@ -20,6 +21,7 @@ const UserSchema = new mongoose.Schema<userInterface>({
 			type: {
 				movieId: String,
 				rating: Number,
+				default: 0,
 			},
 			default: [],
 		},

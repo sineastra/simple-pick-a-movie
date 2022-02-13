@@ -2,10 +2,25 @@ import { Router, Request, Response, NextFunction } from "express"
 import userServices from "../db/services/userServices"
 import { apiServices } from "../db/services/apiServices"
 import { attachCookie, createJWTToken } from "../utils/auth"
-import { extendedRequestIntF, noteType, ratingType } from "../_interfaces/userInterfaces"
+import {
+	extendedRequestIntF,
+	noteType,
+	ratingType,
+	userInterface,
+} from "../_interfaces/userInterfaces"
 
 
 const router = Router()
+
+const getUser = async (req: Request, res: Response): Promise<userInterface> => {
+	const extendedRequest = req as extendedRequestIntF
+
+	if (!extendedRequest.user) {
+		res.json({ status: "Unauthorized", statusCode: 401 })
+	}
+
+	return await userServices.getById(extendedRequest.user._id)
+}
 
 // Basic Login and Register with No hashing and any security whatsoever, enough for the demo.
 const signIn = async (req: Request, res: Response) => {
@@ -21,6 +36,7 @@ const signIn = async (req: Request, res: Response) => {
 		res.json({
 			status: "Unauthorized",
 			statusCode: 401,
+			softError: true,
 			errors: [{ msg: "Wrong user email and/or password." }],
 		})
 	}
@@ -44,95 +60,84 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 		res.json({
 			status: "Conflict",
 			statusCode: 409,
+			softError: true,
 			errors: [{ msg: "Existing user. Please sign in." }],
 		})
 	}
 }
 
+// Auth Endpoints
 router.post("/register", register, signIn)
 router.post("/sign-in", signIn)
 
+// Favourites Endpoint
 router.get("/favourites", async (req, res) => {
-	//TODO: Change the user
-	const user = await userServices.getById('620772b331579175679664d1')
+	const user = await getUser(req, res)
+	const favs = await apiServices.getFavs(user.favourites)
 
-	if (user) {
-		const favs = await apiServices.getFavs(user.favourites)
-
-		res.json({ status: 'ok', statusCode: 200, data: favs })
-	}
+	res.json({ status: 'ok', statusCode: 200, data: favs })
 })
-router.put("/favourites/:movieId", async (req, res) => {
-	const user = await userServices.getById('620772b331579175679664d1')
+router.post("/favourites/:movieId", async (req, res) => {
+	const user = await getUser(req, res)
+	const favIndex = user.favourites.findIndex((x: string) => x === req.params.movieId)
 
-	if (user) {
-		const favIndex = user.favourites.findIndex((x: string) => x === req.params.movieId)
-
-		if (favIndex === -1) {
-			user.favourites.push(req.params.movieId)
-		} else {
-			user.favourites.splice(favIndex, 1)
-		}
-
-		await user.save()
-		const favs = await apiServices.getFavs(user.favourites)
-
-		res.json({ status: "ok", statusCode: 200, data: favs })
+	if (favIndex === -1) {
+		user.favourites.push(req.params.movieId)
+	} else {
+		user.favourites.splice(favIndex, 1)
 	}
+	await userServices.updateUser(user._id, user)
+
+	const favs = await apiServices.getFavs(user.favourites)
+
+	res.json({ status: "ok", statusCode: 200, data: favs })
+
 })
 
+// Notes Endpoint
 router.get("/notes/:movieId", async (req, res) => {
-	const user = await userServices.getById('620772b331579175679664d1')
+	const user = await getUser(req, res)
+	const { note } = user.notes.find((x: noteType) => x.movieId === req.params.movieId) || { note: '' }
 
-	if (user) {
-		const note = user.notes.find((x: noteType) => x.movieId === req.params.movieId)
+	res.send({ status: 'ok', statusCode: 200, data: note })
 
-		res.send({ status: 'ok', statusCode: 200, data: note?.note || null })
-	}
 })
 router.post("/notes/:movieId", async (req, res) => {
-	const user = await userServices.getById('620772b331579175679664d1')
+	const user = await getUser(req, res)
+	const noteIndex = user.notes.findIndex((x: noteType) => x.movieId === req.params.movieId)
 
-	if (user) {
-		const noteIndex = user.notes.findIndex((x: noteType) => x.movieId === req.params.movieId)
-
-		if (noteIndex !== -1) {
-			user.notes[noteIndex].note = req.body.note
-		} else {
-			user.notes.push({ movieId: req.params.movieId, note: req.body.note })
-		}
-
-		await user.save()
-
-		res.json({ status: "ok", statusCode: 200, data: user })
+	if (noteIndex !== -1) {
+		user.notes[noteIndex].note = req.body.note
+	} else {
+		user.notes.push({ movieId: req.params.movieId, note: req.body.note })
 	}
+
+	await userServices.updateUser(user._id, user)
+
+	res.json({ status: "ok", statusCode: 200, data: user })
+
 })
 
+// Ratings Endpoint
 router.get("/ratings/:movieId", async (req, res) => {
-	const user = await userServices.getById('620772b331579175679664d1')
+	const user = await getUser(req, res)
+	const { rating } = user.ratings.find((x: ratingType) => x.movieId === req.params.movieId) || { rating: 0 }
 
-	if (user) {
-		const rating = user.ratings.find((x: ratingType) => x.movieId === req.params.movieId)
-
-		res.send({ status: 'ok', statusCode: 200, data: rating?.rating || null })
-	}
+	res.send({ status: 'ok', statusCode: 200, data: rating })
 })
 router.post("/ratings/:movieId", async (req, res) => {
-	const user = await userServices.getById('620772b331579175679664d1')
+	const user = await getUser(req, res)
+	const ratingIndex = user.ratings.findIndex((x: ratingType) => x.movieId === req.params.movieId)
 
-	if (user) {
-		const ratingIndex = user.ratings.findIndex((x: ratingType) => x.movieId === req.params.movieId)
-
-		if (ratingIndex !== -1) {
-			user.ratings[ratingIndex].rating = req.body.rating
-		} else {
-			user.ratings.push({ movieId: req.params.movieId, rating: req.body.rating })
-		}
-
-		await user.save()
-
-		res.json({ status: "ok", statusCode: 200, data: user })
+	if (ratingIndex !== -1) {
+		user.ratings[ratingIndex].rating = req.body.rating
+	} else {
+		user.ratings.push({ movieId: req.params.movieId, rating: req.body.rating })
 	}
+	await userServices.updateUser(user._id, user)
+
+	res.json({ status: "ok", statusCode: 200, data: user })
+
 })
 
 export default router
