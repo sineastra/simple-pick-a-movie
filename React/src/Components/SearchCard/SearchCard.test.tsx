@@ -16,9 +16,7 @@ const mockedMovie: movieIntF = {
 	description: 'e',
 }
 
-const updateFavMock = jest.fn(() => {
-	console.log('updated')
-})
+const updateFavMock = jest.fn()
 
 const renderScreen = (movie: movieIntF, favourites: movieIntF[]) =>
 	render(

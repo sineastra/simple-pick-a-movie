@@ -11,7 +11,7 @@
 
         & > span {
             color: var(--theme-subtext-color);
-            &> span {
+            & > .coolSpan {
                 color: var(--theme-secondary-color);
             }
         }

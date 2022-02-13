@@ -17,7 +17,7 @@
         & .description  {
             margin: 0;
             max-height: 35%;
-            overflow-y: scroll;
+            overflow-y: auto;
         }
 
         & > button {
