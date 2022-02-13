@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
 import userDataReducer from "../features/userSlice"
+import notifDataReducer from "../features/notifSlice"
 
 
 const store = configureStore({
 	reducer: {
 		userData: userDataReducer,
+		notifData: notifDataReducer,
 	},
 })
 

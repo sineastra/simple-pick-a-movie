@@ -1,0 +1,11 @@
+.notif {
+  position: absolute;
+  right: 100px;
+  top: 100px;
+  background: #a80101;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/*# sourceMappingURL=Notif.module.css.map */

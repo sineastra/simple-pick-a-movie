@@ -9,7 +9,6 @@ interface authReturnIntF {
 	token?: string,
 }
 
-
 interface userRequestsIntF {
 	getFavs: () => Promise<movieIntF[]>,
 	updateFavs: (s: string) => Promise<movieIntF[]>,
@@ -18,6 +17,7 @@ interface userRequestsIntF {
 	signIn: (f: { name: string, password: string }) => Promise<authReturnIntF>,
 	register: (f: { name: string, password: string }) => Promise<authReturnIntF>,
 	getMovieDetailsForUser: (id: string) => Promise<movieDetailsForUserIntF>,
+	logout: () => void
 }
 const userRequests: userRequestsIntF = {
 	getFavs: async () =>
@@ -41,6 +41,9 @@ const userRequests: userRequestsIntF = {
 	},
 	updateFavs: async (movieId): Promise<movieIntF[]> =>
 		await abstractJSONRequest({ uri: `/user/favourites/${ movieId }`, body: { imdbId: movieId } }),
+	logout: async () => {
+		await abstractRequest({ uri: "/user/logout", method: 'DELETE' })
+	},
 }
 
 export { userRequests }

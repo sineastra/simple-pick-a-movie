@@ -12,9 +12,18 @@
     border-bottom: 1px solid black;
     @include displayFlex(row, space-between, center);
 
-    & > a {
-        color: var(--theme-text-color);
-        text-decoration: none;
+    & > .logoWrapper {
+        @include displayFlex(column, center);
+
+        & > a {
+            color: var(--theme-text-color);
+            text-decoration: none;
+        }
+
+        & > .logout {
+            margin: 0;
+            cursor: pointer;
+        }
     }
 
     & > form {

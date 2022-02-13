@@ -8,6 +8,7 @@ import {
 	ratingType,
 	userInterface,
 } from "../_interfaces/userInterfaces"
+import variables from "../config/variables"
 
 
 const router = Router()
@@ -69,6 +70,11 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 // Auth Endpoints
 router.post("/register", register, signIn)
 router.post("/sign-in", signIn)
+router.delete("/logout", (req, res) => {
+	res.clearCookie(variables.COOKIE_NAME)
+
+	res.json({ ok: true, status: 200, statusText: "ok", data: null })
+})
 
 // Favourites Endpoint
 router.get("/favourites", async (req, res) => {

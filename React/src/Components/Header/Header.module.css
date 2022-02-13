@@ -13,9 +13,20 @@
   align-items: center;
   align-content: initial;
 }
-.header > a {
+.header > .logoWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: initial;
+  align-content: initial;
+}
+.header > .logoWrapper > a {
   color: var(--theme-text-color);
   text-decoration: none;
+}
+.header > .logoWrapper > .logout {
+  margin: 0;
+  cursor: pointer;
 }
 .header > form {
   width: 500px;

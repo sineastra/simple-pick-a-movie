@@ -6,3 +6,6 @@ export interface userData {
 export interface userSliceIntF {
 	loggedUser: userData | null
 }
+export interface notifSliceIntF {
+	notif: string
+}

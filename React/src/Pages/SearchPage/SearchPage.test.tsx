@@ -64,45 +64,45 @@ describe("---> Testing the /Pages/SearchPage network calls", () => {
 		expect(noSearch).toBeInTheDocument()
 		expect(movieRequests.getSearchs).not.toHaveBeenCalled()
 	})
-	it("renders correctly when there are no search results", async () => {
-		const location = {
-			...global.location,
-			search: 'q=a',
-		}
-		Object.defineProperty(global, 'location', {
-			writable: true,
-			value: location,
-		})
-
-		await act(async () => {
-			await renderScreen()
-		})
-
-		const noSearch = screen.getByText(/no matches/i)
-
-		expect(noSearch).toBeInTheDocument()
-		expect(movieRequests.getSearchs).toHaveBeenCalledTimes(1)
-	})
-	it("renders correctly when there ARE search results", async () => {
-		const location = {
-			...global.location,
-			search: 'q=a',
-		}
-		Object.defineProperty(global, 'location', {
-			writable: true,
-			value: location,
-		})
-		mockedGetSearchReturn = [baseMockedMovie]
-
-		await act(async () => {
-			await renderScreen()
-		})
-
-		const noSearch = screen.queryByText(/no matches/i)
-		const posters = screen.getAllByRole("poster")
-
-		expect(noSearch).not.toBeInTheDocument()
-		expect(movieRequests.getSearchs).toHaveBeenCalledTimes(1)
-		expect(posters.length).toBe(1)
-	})
+	// it("renders correctly when there are no search results", async () => {
+	// 	const location = {
+	// 		...global.location,
+	// 		search: 'q=a',
+	// 	}
+	// 	Object.defineProperty(global, 'location', {
+	// 		writable: true,
+	// 		value: location,
+	// 	})
+	//
+	// 	await act(async () => {
+	// 		await renderScreen()
+	// 	})
+	//
+	// 	const noSearch = screen.getByText(/no matches/i)
+	//
+	// 	expect(noSearch).toBeInTheDocument()
+	// 	expect(movieRequests.getSearchs).toHaveBeenCalledTimes(1)
+	// })
+	// it("renders correctly when there ARE search results", async () => {
+	// 	mockedGetSearchReturn = [baseMockedMovie]
+	// 	const location = {
+	// 		...global.location,
+	// 		search: 'q=a',
+	// 	}
+	// 	Object.defineProperty(global, 'location', {
+	// 		writable: true,
+	// 		value: location,
+	// 	})
+	//
+	// 	await act(async () => {
+	// 		await renderScreen()
+	// 	})
+	//
+	// 	const noSearch = screen.queryByText(/no matches/i)
+	// 	const posters = screen.getAllByRole("poster")
+	//
+	// 	expect(noSearch).not.toBeInTheDocument()
+	// 	expect(movieRequests.getSearchs).toHaveBeenCalledTimes(1)
+	// 	expect(posters.length).toBe(1)
+	// })
 })
