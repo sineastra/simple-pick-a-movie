@@ -1,7 +1,6 @@
 import { movieIntF } from "../../_interfaces/movies"
 import { Link } from "react-router-dom"
 import styles from "./SearchCard.module.scss"
-import { BaseSyntheticEvent } from "react"
 import { descriptionPipe, genresPipe, imagePipe } from "../../utils/pipes"
 
 

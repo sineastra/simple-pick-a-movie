@@ -12,6 +12,7 @@ function App () {
 	const [isLoading, setIsLoading] = useState(true)
 	const notif = useSelector((state: RootState) => state.notifData.notif)
 
+	// loading of the user from cookie on reloads.
 	useEffect(() => {
 		const b = document.cookie.match("(^|;)\\s*" + process.env.REACT_APP_COOKIE_NAME + "\\s*=\\s*([^;]+)")
 		const jwtCookie = b ? b.pop() : ""

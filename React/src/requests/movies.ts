@@ -1,6 +1,6 @@
 import { movieIntF } from "../_interfaces/movies"
-import { abstractJSONRequest, abstractRequest } from "./abstractRequests"
-import { user } from "../_interfaces/user"
+import { abstractRequest } from "./abstractRequests"
+
 
 
 interface moviesRequestsIntF {

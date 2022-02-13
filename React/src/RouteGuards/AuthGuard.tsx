@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
 import { RootState } from "../_state/app/store"
-import React, { ReactChild, ReactChildren, ReactElement, ReactNode } from "react"
+import React from "react"
 import { Navigate } from "react-router-dom"
 
 

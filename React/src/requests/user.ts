@@ -2,20 +2,13 @@ import { movieDetailsForUserIntF, movieIntF } from "../_interfaces/movies"
 import { abstractJSONRequest, abstractRequest } from "./abstractRequests"
 
 
-interface authReturnIntF {
-	status?: string,
-	statusCode?: number,
-	errors?: string[],
-	token?: string,
-}
-
 interface userRequestsIntF {
 	getFavs: () => Promise<movieIntF[]>,
 	updateFavs: (s: string) => Promise<movieIntF[]>,
 	updateNote: (id: string, note: string) => void,
 	updateRating: (id: string, rating: number) => void,
-	signIn: (f: { name: string, password: string }) => Promise<authReturnIntF>,
-	register: (f: { name: string, password: string }) => Promise<authReturnIntF>,
+	signIn: (f: { name: string, password: string }) => Promise<{ token: string }>,
+	register: (f: { name: string, password: string }) => Promise<{ token: string }>,
 	getMovieDetailsForUser: (id: string) => Promise<movieDetailsForUserIntF>,
 	logout: () => void
 }

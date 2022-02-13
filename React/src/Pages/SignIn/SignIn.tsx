@@ -22,13 +22,10 @@ const SignIn = () => {
 			? result = await userRequests.signIn(formDataObj)
 			: result = await userRequests.register(formDataObj)
 
-		if (result && result.token) {
-			const deserializedJWT = jwt_decode(result.token)
-			store.dispatch(changeUser(deserializedJWT as userData))
-			navigate("/")
-		} else {
-			// dispatch redux notif here
-		}
+		const deserializedJWT = jwt_decode(result.token)
+		store.dispatch(changeUser(deserializedJWT as userData))
+
+		navigate("/")
 	}
 
 	return (

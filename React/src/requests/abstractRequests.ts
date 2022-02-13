@@ -41,7 +41,7 @@ const abstractRequest = async ({ uri, body = {}, method = "GET" }: abstractReqIn
 		fetch(`${ baseUrl }${ uri }`, predefinedBody)
 			.then(res => res.json())
 			.then((resData: responseIntF) => {
-				if (resData.data) {
+				if (resData.data !== undefined) {
 					resolve(resData.data)
 				} else if (resData.softError && resData.errors) {
 					const errors = resData.errors.map(x => x.msg).join('\n')
@@ -50,6 +50,8 @@ const abstractRequest = async ({ uri, body = {}, method = "GET" }: abstractReqIn
 					setTimeout(() => {
 						store.dispatch(displayNotif(''))
 					}, 5000)
+				} else {
+					reject(resData)
 				}
 			})
 			.catch(e => {

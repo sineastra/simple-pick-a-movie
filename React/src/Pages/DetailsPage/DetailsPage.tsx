@@ -7,7 +7,6 @@ import styles from "./DetailsPage.module.scss"
 import { TimeoutId } from "@reduxjs/toolkit/dist/query/core/buildMiddleware/types"
 import { userRequests } from "../../requests/user"
 import { movieIntF } from "../../_interfaces/movies"
-import user from "@testing-library/user-event"
 
 
 const DetailsPage = () => {
@@ -15,7 +14,6 @@ const DetailsPage = () => {
 	const [movie, setMovie] = useState<movieIntF | null>(null)
 	const [notes, setNotes] = useState<string>('')
 	const [rating, setRating] = useState<number>(0)
-	const [isLoading, setIsLoading] = useState(true)
 	const [favs, setFavs] = useState<movieIntF[]>([])
 	const timeout = useRef<TimeoutId | null>(null)
 
@@ -24,8 +22,8 @@ const DetailsPage = () => {
 
 		setFavs(updatedFavs)
 	}
-	const updateRating = async (newRating: number) => {
-		movie && await userRequests.updateRating(movie.externalId, newRating)
+	const updateRating = (newRating: number) => {
+		movie && userRequests.updateRating(movie.externalId, newRating)
 	}
 	const updateNote = async (e: BaseSyntheticEvent) => {
 		const note = e.target.value
@@ -35,8 +33,8 @@ const DetailsPage = () => {
 			clearTimeout(timeout.current)
 		}
 
-		timeout.current = setTimeout(async () => {
-			movie && await userRequests.updateNote(movie.externalId, note)
+		timeout.current = setTimeout( () => {
+			movie && userRequests.updateNote(movie.externalId, note)
 		}, 1000)
 	}
 
@@ -51,14 +49,10 @@ const DetailsPage = () => {
 					userRequests.getFavs(),
 				])
 
-				const notesData = userMovieData.notes
-				const ratingData = userMovieData.rating
-
-				notesData && setNotes(notesData)
-				ratingData && setRating(ratingData)
+				setNotes(userMovieData.notes)
+				setRating(userMovieData.rating)
 				setMovie(movieData)
 				setFavs(userFavs)
-				setIsLoading(false)
 			}
 
 			getData()
@@ -66,7 +60,7 @@ const DetailsPage = () => {
 	}, [params.id])
 
 	return (
-		movie && favs &&
+		movie &&
 		<section className={ styles.wrapper }>
 			<div className={ styles.innerWrapper }>
 				<SearchCard

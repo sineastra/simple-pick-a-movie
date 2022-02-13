@@ -12,10 +12,10 @@ const Favourites = ({ favs }: propsIntF) => {
 		<section className={ styles.wrapper }>
 			<h1>My Favourites</h1>
 			{ favs.length === 0
-				? <div className={ styles.empty } role="no-fav-msg">
+				? <div className={ styles.empty }>
 					You don't have any favourites yet. Go and browse like a browser.
 				</div>
-				: <div className={ styles.nonEmpty } role="fav-grid">
+				: <div className={ styles.nonEmpty }>
 					{ favs.map(x => <SingleGridMovie movie={ x } key={ x.externalId }/>) }
 				</div>
 			}

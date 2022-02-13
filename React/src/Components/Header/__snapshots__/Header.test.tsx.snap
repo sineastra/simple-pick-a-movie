@@ -19,6 +19,7 @@ Array [
       </a>
       <h5
         className="logout"
+        onClick={[Function]}
       >
         logout
       </h5>

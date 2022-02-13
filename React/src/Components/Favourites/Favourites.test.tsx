@@ -18,14 +18,6 @@ const mockedMovies: movieIntF[] = [{
 	runtime: 1,
 	officialSite: 'b',
 	description: 'b',
-}, {
-	externalId: 'd',
-	poster: 'c',
-	title: 'b',
-	genres: ['a', 'b'],
-	runtime: 1,
-	officialSite: 'b',
-	description: 'b',
 }]
 
 describe("---> Testing /Components/Favourites", () => {

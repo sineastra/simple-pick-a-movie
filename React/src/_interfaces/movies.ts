@@ -10,6 +10,6 @@ export interface movieIntF {
 }
 
 export interface movieDetailsForUserIntF {
-	rating: number | null
-	notes: string | null
+	rating: number
+	notes: string
 }

@@ -1,10 +1,7 @@
 import HeroSection from "../../Components/HeroSection/HeroSection"
 import Favourites from "../../Components/Favourites/Favourites"
 import { movieIntF } from "../../_interfaces/movies"
-import { useSelector } from "react-redux"
-import { RootState } from "../../_state/app/store"
 import { useEffect, useState } from "react"
-import { movieRequests } from "../../requests/movies"
 import { userRequests } from "../../requests/user"
 
 

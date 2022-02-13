@@ -12,7 +12,7 @@ const Header = () => {
 	const user = useSelector((state: RootState) => state.userData)
 
 	const logout = () => {
-		const data = userRequests.logout()
+		userRequests.logout()
 
 		document.cookie = process.env.REACT_APP_COOKIE_NAME + '=;expires=Mon, 01 Mar 1980 00:00:01 GMT;'
 		store.dispatch(changeUser(null))

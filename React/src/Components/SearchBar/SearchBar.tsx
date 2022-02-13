@@ -4,22 +4,22 @@ import styles from "./SearchBar.module.scss"
 
 
 const SearchBar = () => {
-	const [searchV, setSearchV] = useState('')
+	const [search, setSearch] = useState('')
 	const navigate = useNavigate()
 
 	const handleChange = (e: BaseSyntheticEvent) => {
-		setSearchV(e.target.value)
+		setSearch(e.target.value)
 	}
 
 	const handleSubmit = (e: BaseSyntheticEvent) => {
 		e.preventDefault()
 
-		if (searchV.trim() !== '') {
+		if (search.trim() !== '') {
 			navigate({
 				pathname: '/search',
-				search: `?q=${ searchV }`,
+				search: `?q=${ search }`,
 			})
-			setSearchV('')
+			setSearch('')
 		}
 	}
 
@@ -29,7 +29,7 @@ const SearchBar = () => {
 				type="search"
 				placeholder="Search by movie title..."
 				onChange={ handleChange }
-				value={ searchV }
+				value={ search }
 				className={ styles.input }
 			/>
 			<button>Search</button>

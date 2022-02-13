@@ -10,11 +10,11 @@ interface propsIntF {
 
 const SingleGridMovie = ({ movie }: propsIntF) => {
 	return (
-		<div role="slide">
+		<div>
 			<Link to={ `/details/${ movie.externalId }` } className={ styles.link }>
 				<img src={ imagePipe(movie.poster) } alt="poster" className={ styles.slide }/>
-				<h4 role="title">{ movie.title }</h4>
-				<h5 role="genre">{ movie.genres.join(', ') }</h5>
+				<h4>{ movie.title }</h4>
+				<h5>{ movie.genres.join(', ') }</h5>
 			</Link>
 		</div>
 	)

@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`---> Testing /Components/FavCard snapshot test 1`] = `
-<div
-  role="slide"
->
+<div>
   <a
     className="link"
     href="/details/a"
@@ -14,14 +12,10 @@ exports[`---> Testing /Components/FavCard snapshot test 1`] = `
       className="slide"
       src="b"
     />
-    <h4
-      role="title"
-    >
+    <h4>
       c
     </h4>
-    <h5
-      role="genre"
-    >
+    <h5>
       d, e
     </h5>
   </a>
