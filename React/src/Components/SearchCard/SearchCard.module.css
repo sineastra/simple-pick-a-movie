@@ -25,6 +25,7 @@
   overflow-y: scroll;
 }
 .mainWrapper > .infoWrapper > button {
+  width: 300px;
   padding: 20px;
   border-radius: 7px;
   background: transparent;

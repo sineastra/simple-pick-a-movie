@@ -1,24 +1,20 @@
-import { act, fireEvent, getByTitle, render, screen } from "@testing-library/react"
+import { act, render, screen } from "@testing-library/react"
 import store from "../../_state/app/store"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import DetailsPage from "./DetailsPage"
-import { movieRequests } from "../../requests/movies"
+import { changeUser } from "../../_state/features/userSlice"
 import user from "@testing-library/user-event"
-import { movieInteractionIntF } from "../../_interfaces/state"
-import RatingStars from "../../Components/RatingStars/RatingStars"
-import exp from "constants"
-import { movieIntF } from "../../_interfaces/movies"
+import { movieDetailsForUserIntF, movieIntF } from "../../_interfaces/movies"
+import { userRequests } from "../../requests/user"
 
 
-const renderScreen = () => render(
-	<Provider store={ store }>
-		<BrowserRouter>
-			<DetailsPage/>
-		</BrowserRouter>,
-	</Provider>,
-)
-const mockedSearchMovie: movieIntF = {
+let mockedGetDetails: movieIntF
+let mockedMovieDetailsReturn: movieDetailsForUserIntF
+let mockedGetFavsReturn: movieIntF[]
+let mockedUpdateFavsReturn: movieIntF[]
+
+const baseMockedMovie: movieIntF = {
 	externalId: 'a',
 	poster: 'b',
 	title: 'b',
@@ -27,17 +23,21 @@ const mockedSearchMovie: movieIntF = {
 	officialSite: 'b',
 	description: 'b',
 }
-const mockedInitialRating: movieInteractionIntF = {
-	_id: 'a',
-	rating: 0,
-	privateComment: '',
-}
+
+jest.mock("../../requests/user", () => {
+	return {
+		userRequests: {
+			getMovieDetailsForUser: jest.fn(() => mockedMovieDetailsReturn),
+			getFavs: jest.fn(() => mockedGetFavsReturn),
+			updateFavs: jest.fn(() => mockedUpdateFavsReturn),
+			updateNote: jest.fn(() => {}),
+		},
+	}
+})
 jest.mock("../../requests/movies", () => {
 	return {
 		movieRequests: {
-			getDetails: async (s: string) => {
-				return mockedSearchMovie
-			},
+			getDetails: jest.fn(() => mockedGetDetails),
 		},
 	}
 })
@@ -48,59 +48,59 @@ jest.mock('react-router-dom', () => ({
 	}),
 }))
 
+const renderScreen = () => render(
+	<Provider store={ store }>
+		<BrowserRouter>
+			<DetailsPage/>
+		</BrowserRouter>,
+	</Provider>,
+)
+
 describe("---> Testing /Pages/DetailsPage functionality", () => {
-	let spy: any
+	beforeAll(() => {
+		act(() => { store.dispatch(changeUser({ _id: '1', name: 'a' })) })
 
-	beforeEach(async () => {
-		spy = jest.spyOn(movieRequests, 'getDetails')
-		// store.dispatch(addRating(mockedInitialRating))
+		mockedGetDetails = baseMockedMovie
+		mockedMovieDetailsReturn = { rating: 0, notes: '' }
+		mockedGetFavsReturn = []
 	})
 
-	afterEach(() => {
-		spy.mockRestore()
+	it("correctly updates favourites on user interaction", async () => {
+		mockedUpdateFavsReturn = [baseMockedMovie]
+
+		await act(async () => {
+			await renderScreen()
+		})
+		let favBtnAdd = screen.queryByText(/add to favourites/i)
+		let favBtnRemove = screen.queryByText(/remove from favourites/i)
+
+		expect(favBtnAdd).toBeInTheDocument()
+		expect(favBtnRemove).toBeNull()
+
+		await act(async () => {
+			favBtnAdd && await user.click(favBtnAdd)
+		})
+
+		favBtnAdd = screen.queryByText(/add to favourites/i)
+		favBtnRemove = screen.queryByText(/remove from favourites/i)
+
+		expect(favBtnAdd).toBeNull()
+		expect(favBtnRemove).toBeInTheDocument()
 	})
 
-	it("correctly reads redux favourites state and renders with the proper info", async () => {
+	it("correctly updates notes on user interaction", async () => {
 		await act(async () => {
 			await renderScreen()
 		})
 
-		const remove = screen.getByText(/Remove From Favourites/i)
+		const textarea: HTMLTextAreaElement = screen.getByRole('textbox')
 
-		expect(remove).toBeInTheDocument()
-		expect(movieRequests.getDetails).toHaveBeenCalledTimes(1)
-	})
-	it("correctly adds a favourite to the store", async () => {
-		await act(async () => {
-			await renderScreen()
-		})
+		await user.type(textarea, 'a')
 
-		const add = screen.getByText(/add to Favourites/i)
-		await user.click(add)
-		const state = store.getState()
+		jest.useFakeTimers()
+		jest.advanceTimersByTime(2000)
 
-		expect(state).toEqual(['a'])
-	})
-	it("correctly removes a favourite from the store", async () => {
-		await act(async () => {
-			await renderScreen()
-		})
-
-		const remove = screen.getByText(/Remove From Favourites/i)
-		await user.click(remove)
-		const state = store.getState()
-
-		expect(state).toEqual([])
-	})
-	it("correctly updates private comment redux state", async () => {
-		await act(async () => {
-			await renderScreen()
-		})
-		const textbox = screen.getByRole('textbox')
-		await user.type(textbox, '{a}')
-		const state = store.getState()
-
-		expect('a').toBe('b')
-		// expect(state.userData.ratings[0].privateComment).toBe('a')
+		expect(textarea.value).toBe('a')
+		expect(userRequests.getMovieDetailsForUser).toHaveBeenCalledTimes(1)
 	})
 })

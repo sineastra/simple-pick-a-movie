@@ -8,3 +8,8 @@ export interface movieIntF {
 	officialSite: string,
 	description: string,
 }
+
+export interface movieDetailsForUserIntF {
+	rating: number | null
+	notes: string | null
+}

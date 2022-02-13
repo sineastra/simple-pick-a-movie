@@ -13,8 +13,9 @@
   align-items: center;
   align-content: initial;
 }
-.header > h1 {
+.header > a {
   color: var(--theme-text-color);
+  text-decoration: none;
 }
 .header > form {
   width: 500px;

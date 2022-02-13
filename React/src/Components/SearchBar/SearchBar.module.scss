@@ -1,4 +1,4 @@
-@import "../../_scssPartials/mixins/mixins";
+@import "../../_scssPartials/mixins";
 
 .form {
     @include displayFlex(row, space-between);

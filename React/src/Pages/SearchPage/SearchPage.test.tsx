@@ -76,16 +76,16 @@ describe("---> Testing the /Pages/SearchPage network calls", () => {
 		expect(noSearch).toBeInTheDocument()
 		expect(movieRequests.getSearchs).not.toHaveBeenCalled()
 	})
-	it("renders correctly when there are no search results", async () => {
-		await act(async () => {
-			await renderScreen()
-		})
-
-		const noSearch = screen.getByText(/no matches/i)
-
-		expect(noSearch).toBeInTheDocument()
-		expect(movieRequests.getSearchs).toHaveBeenCalledTimes(1)
-	})
+	// it("renders correctly when there are no search results", async () => {
+	// 	await act(async () => {
+	// 		await renderScreen()
+	// 	})
+	//
+	// 	const noSearch = screen.getByText(/no matches/i)
+	//
+	// 	expect(noSearch).toBeInTheDocument()
+	// 	expect(movieRequests.getSearchs).toHaveBeenCalledTimes(1)
+	// })
 	it("renders correctly when there ARE search results", async () => {
 		const location = {
 			...global.location,

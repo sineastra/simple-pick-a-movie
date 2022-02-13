@@ -12,8 +12,6 @@ interface propsIntF {
 }
 const SearchCard = ({ movie, favourites, updateFav }: propsIntF) => {
 	const isFav = favourites.some(x => x.externalId === movie.externalId)
-	console.log(favourites)
-	console.log(movie)
 
 	return (
 		<div className={ styles.mainWrapper } role="poster">

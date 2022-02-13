@@ -12,8 +12,6 @@ function App () {
 	useEffect(() => {
 		const b = document.cookie.match("(^|;)\\s*" + process.env.REACT_APP_COOKIE_NAME + "\\s*=\\s*([^;]+)")
 		const jwtCookie = b ? b.pop() : ""
-		
-		console.log(jwtCookie)
 
 		if (jwtCookie) {
 			const user = jwt_decode(jwtCookie)

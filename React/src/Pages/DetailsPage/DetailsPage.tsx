@@ -3,11 +3,11 @@ import SearchCard from "../../Components/SearchCard/SearchCard"
 import { BaseSyntheticEvent, useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { movieRequests } from "../../requests/movies"
-import store, { RootState } from "../../_state/app/store"
 import styles from "./DetailsPage.module.scss"
 import { TimeoutId } from "@reduxjs/toolkit/dist/query/core/buildMiddleware/types"
 import { userRequests } from "../../requests/user"
 import { movieIntF } from "../../_interfaces/movies"
+import user from "@testing-library/user-event"
 
 
 const DetailsPage = () => {
@@ -15,11 +15,12 @@ const DetailsPage = () => {
 	const [movie, setMovie] = useState<movieIntF | null>(null)
 	const [notes, setNotes] = useState<string>('')
 	const [rating, setRating] = useState<number>(0)
+	const [isLoading, setIsLoading] = useState(true)
 	const [favs, setFavs] = useState<movieIntF[]>([])
 	const timeout = useRef<TimeoutId | null>(null)
 
 	const updateFav = async (fav: string) => {
-		const updatedFavs = await userRequests.updateFav(fav)
+		const updatedFavs = await userRequests.updateFavs(fav)
 
 		setFavs(updatedFavs)
 	}
@@ -35,6 +36,7 @@ const DetailsPage = () => {
 		}
 
 		timeout.current = setTimeout(async () => {
+			console.log(movie)
 			movie && await userRequests.updateNote(movie.externalId, note)
 		}, 1000)
 	}
@@ -42,8 +44,6 @@ const DetailsPage = () => {
 	useEffect(() => {
 		if (typeof params.id === 'string' && params.id !== '') {
 			const movieId: string = params.id
-			//TODO: Change the user with redux state
-			const userId = '620772b331579175679664d1'
 
 			const getData = async () => {
 				const [movieData, userMovieData, userFavs] = await Promise.all([
@@ -52,13 +52,14 @@ const DetailsPage = () => {
 					userRequests.getFavs(),
 				])
 
-				const notesData = userMovieData.note
+				const notesData = userMovieData.notes
 				const ratingData = userMovieData.rating
 
 				notesData && setNotes(notesData)
 				ratingData && setRating(ratingData)
 				setMovie(movieData)
 				setFavs(userFavs)
+				setIsLoading(false)
 			}
 
 			getData()
@@ -66,7 +67,7 @@ const DetailsPage = () => {
 	}, [params.id])
 
 	return (
-		movie &&
+		movie && favs &&
 		<section className={ styles.wrapper }>
 			<div className={ styles.innerWrapper }>
 				<SearchCard

@@ -10,7 +10,7 @@ interface abstractJSONRequestIntF {
 	body: any,
 	method?: string,
 }
-interface resIntF {
+interface responseIntF {
 	status: string,
 	statusCode: number,
 	data: any
@@ -38,7 +38,7 @@ const abstractRequest = async ({ uri, body = {}, method }: abstractReqIntF): Pro
 		// @ts-ignore
 		fetch(`${ baseUrl }${ uri }`, predefinedBody)
 			.then(res => res.json())
-			.then((resData: resIntF) => {
+			.then((resData: responseIntF) => {
 				resolve(resData.data)
 			})
 			.catch(e => {

@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom"
 import styles from "./SignIn.module.scss"
 import store from "../../_state/app/store"
 import { changeUser } from "../../_state/features/userSlice"
-import { userData } from "../../_interfaces/state"
 import jwt_decode from "jwt-decode"
+import { userData } from "../../_interfaces/state"
 
 
 const SignIn = () => {

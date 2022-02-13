@@ -46,6 +46,6 @@ describe("---> Testing output of /Components/SearchCard", () => {
 
 		await user.click(btn)
 
-		expect(updateFavMock).toHaveBeenCalled()
+		expect(updateFavMock).toHaveBeenCalledTimes(1)
 	})
 })

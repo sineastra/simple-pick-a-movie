@@ -1,4 +1,4 @@
-import { movieIntF } from "../_interfaces/movies"
+import { movieDetailsForUserIntF, movieIntF } from "../_interfaces/movies"
 import { abstractJSONRequest, abstractRequest } from "./abstractRequests"
 
 
@@ -9,24 +9,25 @@ interface authReturnIntF {
 	token?: string,
 }
 
+
 interface userRequestsIntF {
 	getFavs: () => Promise<movieIntF[]>,
-	updateFav: (s: string) => Promise<movieIntF[]>,
+	updateFavs: (s: string) => Promise<movieIntF[]>,
 	updateNote: (id: string, note: string) => void,
 	updateRating: (id: string, rating: number) => void,
 	signIn: (f: { name: string, password: string }) => Promise<authReturnIntF>,
 	register: (f: { name: string, password: string }) => Promise<authReturnIntF>,
-	getMovieDetailsForUser: (id: string) => Promise<{ rating: number | null, note: string | null }>,
+	getMovieDetailsForUser: (id: string) => Promise<movieDetailsForUserIntF>,
 }
 const userRequests: userRequestsIntF = {
 	getFavs: async () =>
 		await abstractRequest({ uri: '/user/favourites' }),
 	getMovieDetailsForUser: async (movieId) => {
-		const [note, rating] = await Promise.all([
+		const [notes, rating] = await Promise.all([
 			abstractRequest({ uri: `/user/notes/${ movieId }` }),
 			abstractRequest({ uri: `/user/ratings/${ movieId }` }),
 		])
-		return { rating, note }
+		return { rating, notes }
 	},
 	signIn: async (formData) =>
 		await abstractJSONRequest({ uri: `/user/sign-in`, body: { ...formData } }),
@@ -38,8 +39,8 @@ const userRequests: userRequestsIntF = {
 	updateRating: async (movieId, rating) => {
 		await abstractJSONRequest({ uri: `/user/ratings/${ movieId }`, body: { rating } })
 	},
-	updateFav: async (movieId): Promise<movieIntF[]> =>
-		await abstractJSONRequest({ uri: `/user/favourites/${ movieId }`, body: { imdbId: movieId }, method: 'PUT' }),
+	updateFavs: async (movieId): Promise<movieIntF[]> =>
+		await abstractJSONRequest({ uri: `/user/favourites/${ movieId }`, body: { imdbId: movieId } }),
 }
 
 export { userRequests }

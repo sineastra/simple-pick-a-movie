@@ -13,9 +13,10 @@ const SearchPage = () => {
 	const [movies, setMovies] = useState<movieIntF[]>([])
 	const [favs, setFavs] = useState<movieIntF[]>([])
 
-	//TODO: abstract these.
 	const updateFav = async (fav: string) => {
-		await userRequests.updateFav(fav)
+		const updatedFavs = await userRequests.updateFavs(fav)
+
+		setFavs(updatedFavs)
 	}
 
 	useEffect(() => {

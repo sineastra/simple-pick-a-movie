@@ -2,33 +2,7 @@
 
 exports[`---> Testing /Components/Header snapshot test 1`] = `
 Array [
-  <header
-    className="header"
-  >
-    <a
-      href="/"
-      onClick={[Function]}
-    >
-      <h1>
-        My Movie Collection
-      </h1>
-    </a>
-    <form
-      className="form"
-      onSubmit={[Function]}
-    >
-      <input
-        className="input"
-        onChange={[Function]}
-        placeholder="Search by movie title..."
-        type="search"
-        value=""
-      />
-      <button>
-        Search
-      </button>
-    </form>
-  </header>,
+  ",",
   ",",
 ]
 `;

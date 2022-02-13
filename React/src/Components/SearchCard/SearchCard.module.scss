@@ -1,4 +1,4 @@
-@import "../../_scssPartials/mixins/mixins";
+@import "../../_scssPartials/mixins";
 
 .mainWrapper {
     @include displayFlex();
@@ -21,6 +21,7 @@
         }
 
         & > button {
+            width: 300px;
             padding: 20px;
             border-radius: 7px;
             background: transparent;
