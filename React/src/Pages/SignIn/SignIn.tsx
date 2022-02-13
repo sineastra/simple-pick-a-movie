@@ -30,15 +30,19 @@ const SignIn = () => {
 
 	return (
 		<div className={ styles.wrapper }>
+			<h2>
+				Minimal auth with no protections or validations whatsoever.<br/><br/>
+				<span>There <span>are</span>, however notifications from the Express App for existing user and wrong password :)</span>
+			</h2>
 			<section>
-				<form onSubmit={ (e) => processAuth('signIn', e) }>
+				<form onSubmit={ (e) => processAuth('signIn', e) } autoComplete="off">
 					<h1>Sign In</h1>
 					<input type="text" name="name" placeholder="username"/>
 					<input type="text" name="password" placeholder="password"/>
 					<button>Login</button>
 				</form>
 
-				<form onSubmit={ (e) => processAuth('register', e) }>
+				<form onSubmit={ (e) => processAuth('register', e) } autoComplete="off">
 					<h1>Register</h1>
 					<input type="text" name="name" placeholder="username"/>
 					<input type="text" name="password" placeholder="password"/>

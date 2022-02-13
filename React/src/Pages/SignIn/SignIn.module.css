@@ -7,6 +7,16 @@
   align-items: center;
   align-content: center;
 }
+.wrapper > h2 {
+  margin-bottom: 50px;
+  text-align: center;
+}
+.wrapper > h2 > span {
+  color: var(--theme-subtext-color);
+}
+.wrapper > h2 > span > span {
+  color: var(--theme-secondary-color);
+}
 .wrapper > section {
   width: 700px;
   border: 1px solid white;

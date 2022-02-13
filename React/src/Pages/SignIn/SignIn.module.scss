@@ -5,6 +5,18 @@
     height: 100vh;
     @include centeredFlex(column);
 
+    & > h2 {
+        margin-bottom: 50px;
+        text-align: center;
+
+        & > span {
+            color: var(--theme-subtext-color);
+            &> span {
+                color: var(--theme-secondary-color);
+            }
+        }
+    }
+
     & > section {
         width: 700px;
         border: 1px solid white;
