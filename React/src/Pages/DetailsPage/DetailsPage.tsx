@@ -36,7 +36,6 @@ const DetailsPage = () => {
 		}
 
 		timeout.current = setTimeout(async () => {
-			console.log(movie)
 			movie && await userRequests.updateNote(movie.externalId, note)
 		}, 1000)
 	}

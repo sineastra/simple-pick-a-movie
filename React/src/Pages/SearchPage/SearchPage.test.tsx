@@ -3,16 +3,32 @@ import { act, render, screen } from "@testing-library/react"
 import SearchPage from "./SearchPage"
 import { Provider } from "react-redux"
 import { movieRequests } from "../../requests/movies"
-import user from "@testing-library/user-event"
 import store from "../../_state/app/store"
 import { movieIntF } from "../../_interfaces/movies"
+import { changeUser } from "../../_state/features/userSlice"
 
 
-let mockGetSearchReturn: movieIntF[] = []
-let mockUpdateFavReturn: movieIntF[] = []
-let mockGetFavsReturn: movieIntF[] = []
+let mockedGetSearchReturn: movieIntF[] = []
+let mockedUpdateFavsReturn: movieIntF[]
+let mockedGetFavsReturn: movieIntF[]
 
-const mockedSearchMovie: movieIntF = {
+jest.mock("../../requests/movies", () => {
+	return {
+		movieRequests: {
+			getSearchs: jest.fn(() => mockedGetSearchReturn)
+		},
+	}
+})
+jest.mock("../../requests/user", () => {
+	return {
+		userRequests: {
+			updateFavs: jest.fn(() => mockedUpdateFavsReturn),
+			getFavs: jest.fn(() => mockedGetFavsReturn),
+		},
+	}
+})
+
+const baseMockedMovie: movieIntF = {
 	externalId: 'b',
 	poster: 'b',
 	title: 'a',
@@ -21,33 +37,6 @@ const mockedSearchMovie: movieIntF = {
 	officialSite: 'b',
 	description: 'b',
 }
-jest.mock("../../requests/movies", () => {
-	return {
-		movieRequests: {
-			getSearchs: (s: string) => {
-				return mockGetSearchReturn
-			},
-		},
-	}
-})
-jest.mock("../../requests/user", () => {
-	return {
-		userRequests: {
-			updateFav: (s: string) => {
-				const index = mockUpdateFavReturn.findIndex(x => x.externalId === s)
-
-				if (index !== -1) {
-					return mockUpdateFavReturn.splice(index, 1)
-				} else {
-					mockUpdateFavReturn.push({ ...mockedSearchMovie, externalId: s })
-				}
-			},
-			getFavs: () => {
-				return mockGetFavsReturn
-			},
-		},
-	}
-})
 
 const renderScreen = () => render(
 	<Provider store={ store }>
@@ -58,14 +47,13 @@ const renderScreen = () => render(
 )
 
 describe("---> Testing the /Pages/SearchPage network calls", () => {
-	let spy: any
+	beforeAll(() => {
+		act(() => { store.dispatch(changeUser({ _id: '1', name: 'a' })) })
 
-	beforeEach(() => {
-		spy = jest.spyOn(movieRequests, 'getSearchs')
+		mockedGetFavsReturn = []
 	})
-	afterEach(() => {
-		spy.mockRestore()
-		mockGetSearchReturn = []
+	beforeEach(() => {
+		jest.clearAllMocks()
 		global.location.search = ''
 	})
 
@@ -76,16 +64,25 @@ describe("---> Testing the /Pages/SearchPage network calls", () => {
 		expect(noSearch).toBeInTheDocument()
 		expect(movieRequests.getSearchs).not.toHaveBeenCalled()
 	})
-	// it("renders correctly when there are no search results", async () => {
-	// 	await act(async () => {
-	// 		await renderScreen()
-	// 	})
-	//
-	// 	const noSearch = screen.getByText(/no matches/i)
-	//
-	// 	expect(noSearch).toBeInTheDocument()
-	// 	expect(movieRequests.getSearchs).toHaveBeenCalledTimes(1)
-	// })
+	it("renders correctly when there are no search results", async () => {
+		const location = {
+			...global.location,
+			search: 'q=a',
+		}
+		Object.defineProperty(global, 'location', {
+			writable: true,
+			value: location,
+		})
+
+		await act(async () => {
+			await renderScreen()
+		})
+
+		const noSearch = screen.getByText(/no matches/i)
+
+		expect(noSearch).toBeInTheDocument()
+		expect(movieRequests.getSearchs).toHaveBeenCalledTimes(1)
+	})
 	it("renders correctly when there ARE search results", async () => {
 		const location = {
 			...global.location,
@@ -95,7 +92,7 @@ describe("---> Testing the /Pages/SearchPage network calls", () => {
 			writable: true,
 			value: location,
 		})
-		mockGetSearchReturn = [mockedSearchMovie, { ...mockedSearchMovie, externalId: 'c' }]
+		mockedGetSearchReturn = [baseMockedMovie]
 
 		await act(async () => {
 			await renderScreen()
@@ -106,6 +103,6 @@ describe("---> Testing the /Pages/SearchPage network calls", () => {
 
 		expect(noSearch).not.toBeInTheDocument()
 		expect(movieRequests.getSearchs).toHaveBeenCalledTimes(1)
-		expect(posters.length).toBe(2)
+		expect(posters.length).toBe(1)
 	})
 })

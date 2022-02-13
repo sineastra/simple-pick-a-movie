@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react"
+import { act, cleanup, render, screen } from "@testing-library/react"
 import store from "../../_state/app/store"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
@@ -63,6 +63,10 @@ describe("---> Testing /Pages/DetailsPage functionality", () => {
 		mockedGetDetails = baseMockedMovie
 		mockedMovieDetailsReturn = { rating: 0, notes: '' }
 		mockedGetFavsReturn = []
+	})
+
+	beforeEach(() => {
+		jest.clearAllMocks()
 	})
 
 	it("correctly updates favourites on user interaction", async () => {

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`---> Testing the Landing Page snapshot test -> renders correctly WITH favourites 1`] = `null`;
+
+exports[`---> Testing the Landing Page snapshot test -> renders correctly with no favourites 1`] = `null`;

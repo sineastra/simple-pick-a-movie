@@ -1,23 +1,21 @@
+import { configureStore } from "@reduxjs/toolkit"
+import userReducer, { changeUser } from "../../_state/features/userSlice"
+import renderer from "react-test-renderer"
+import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import LandingPage from "./LandingPage"
-import { Provider } from "react-redux"
-import { configureStore } from "@reduxjs/toolkit"
-import userReducer from "../../_state/features/userSlice"
-import { act, render, screen } from "@testing-library/react"
-import { movieRequests } from "../../requests/movies"
+import { movieIntF } from "../../_interfaces/movies"
 
-
-const mockedMovies = [{
-	imdbId: 'a',
+const baseMockedMovie: movieIntF = {
+	externalId: 'a',
 	poster: 'b',
-	title: 'c',
-	genres: ['d', 'e'],
-}, {
-	imdbId: 'd',
-	poster: 'c',
 	title: 'b',
-	genres: ['a', 'b'],
-}]
+	genres: ['b'],
+	runtime: 1,
+	officialSite: 'b',
+	description: 'b',
+}
+let mockedMovies: movieIntF[] = []
 
 const store = configureStore({
 	reducer: {
@@ -28,51 +26,37 @@ const store = configureStore({
 jest.mock("../../requests/movies", () => {
 	return {
 		movieRequests: {
-			getFavs: () => mockedMovies,
+			getFavs: jest.fn(() => mockedMovies),
 		},
 	}
 })
 
 describe("---> Testing the Landing Page", () => {
+	const renderTree = () => renderer.create(
+		<Provider store={ store }>
+			<BrowserRouter>
+				<LandingPage/>
+			</BrowserRouter>
+		</Provider>,
+	).toJSON()
+
+	beforeAll(() => {
+		store.dispatch(changeUser({ _id: '1', name: 'a' }))
+	})
+
 	beforeEach(() => {
-		jest.resetAllMocks()
+		jest.clearAllMocks()
 	})
 
-	it("should ok", () => {
-		expect('').toBe('')
-	})
+	it("snapshot test -> renders correctly with no favourites", () => {
+		const view = renderTree()
 
-	// it("should render properly based on redux state -> no fav movies", async () => {
-	// 	render(
-	// 		<Provider store={ store }>
-	// 			<BrowserRouter>
-	// 				<LandingPage/>
-	// 			</BrowserRouter>,
-	// 		</Provider>,
-	// 	)
-	//
-	// 	const emptyE = screen.getByRole('no-fav-msg')
-	// 	const gridContainer = screen.queryByRole("fav-grid")
-	//
-	// 	expect(emptyE).toBeInTheDocument()
-	// 	expect(gridContainer).toBeNull()
-	// })
-	// it("should render properly based on redux state -> existing fav movies", async () => {
-	// 	await act(async () => {
-	// 		await render(
-	// 			<Provider store={ store }>
-	// 				<BrowserRouter>
-	// 					<LandingPage/>
-	// 				</BrowserRouter>,
-	// 			</Provider>,
-	// 		)
-	// 	})
-	// 	const emptyE = screen.queryByRole('no-fav-msg')
-	// 	const gridContainer = screen.getByRole("fav-grid")
-	// 	const slides = screen.getAllByRole("slide")
-	//
-	// 	expect(emptyE).toBeNull()
-	// 	expect(gridContainer).toBeInTheDocument()
-	// 	expect(slides.length).toBe(mockedMovies.length)
-	// })
+		expect(view).toMatchSnapshot()
+	})
+	it("snapshot test -> renders correctly WITH favourites", () => {
+		mockedMovies = [baseMockedMovie]
+		const view = renderTree()
+
+		expect(view).toMatchSnapshot()
+	})
 })
