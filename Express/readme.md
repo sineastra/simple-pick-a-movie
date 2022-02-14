@@ -5,7 +5,7 @@
 - Pattern 1: Endpoint JSON Return Pattern: { "status": string, "statusCode": number, "data": any }
 - Pattern 2: Endpoint JSON Soft Errors: {"status": string, "statusCode": number, "softError": boolean, "errors": {"msg": string}[]}
 
-<i>Soft Errors are the way Express tells the SPA: "Don't break, show notification instead"</i>
+<i>Soft Errors: "Don't break, show notification instead"</i>
 <hr/>
 
 <h3> Url Notes </h3
