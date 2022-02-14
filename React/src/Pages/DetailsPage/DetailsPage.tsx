@@ -35,7 +35,7 @@ const DetailsPage = () => {
 
 		timeout.current = setTimeout( () => {
 			movie && userRequests.updateNote(movie.externalId, note)
-		}, 1000)
+		}, 500)
 	}
 
 	useEffect(() => {
