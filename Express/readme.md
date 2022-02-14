@@ -5,8 +5,7 @@
 - Pattern 1: Endpoint JSON Return Pattern: { "status": string, "statusCode": number, "data": any }
 - Pattern 2: Endpoint JSON Soft Errors: {"status": string, "statusCode": number, "softError": boolean, "errors": {"msg": string}[]}
 
-<i>Soft Errors are the way Express tells the SPA: "Hey, there is an error here, but dont break, just show notification" 
-e.g.: Wrong username or password/Existing user when logging in</i>
+<i>Soft Errors are the way Express tells the SPA: "Don't break, show notification instead"</i>
 <hr/>
 
 <h3> Url Notes </h3
