@@ -1,5 +1,4 @@
-# mkit
-project assignemt for mk it
+# simple-pick-a-movie
 
 ## Used: 
 
